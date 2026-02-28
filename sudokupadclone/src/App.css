@@ -66,3 +66,11 @@
     font-size: 24px;
     text-align: justify-all;
 }
+
+.active-button {
+    background-color: lightskyblue;
+}
+
+.inactive-button {
+    background-color: white;
+}

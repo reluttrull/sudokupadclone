@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="sudokupadclone/sudokupadclone.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+</Solution>

@@ -4,7 +4,7 @@ import Controls from "./Controls"
 import { InputType } from '../enums'
 
 function Puzzle() {
-    const [inputType, setInputType] = useState<InputType>(InputType.None);
+    const [inputType, setInputType] = useState<InputType>(InputType.BigNumber);
     const handleInputTypeChanged = (inputType: InputType) => {
         console.log(inputType == InputType.BigNumber);
         setInputType(inputType);

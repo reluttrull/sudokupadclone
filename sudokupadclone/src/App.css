@@ -98,3 +98,7 @@
 .square-button-icon > img {
     width: 40px;
 }
+
+.selected-square {
+    background-color: lightgoldenrodyellow;
+}

@@ -50,6 +50,10 @@ function Controls({ activeInputType, onInputTypeChanged }: ControlsProps) {
                                 onClick={() => onInputTypeChanged(InputType.SmallCenterNumber)}>
                         <img src="/smallCenterNumbersInput.png" />
                     </button></div>
+                    <div><button className={activeInputType == InputType.SmallCornerNumber ? 'active-button square-button-icon' : 'inactive-button square-button-icon'}
+                        onClick={() => onInputTypeChanged(InputType.SmallCornerNumber)}>
+                        <img src="/smallCornerNumbersInput.png" />
+                    </button></div>
                 </div>
             </div>
         </>

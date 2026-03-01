@@ -5,3 +5,7 @@ export interface Cell {
     isProvided: boolean;
     index: number;
 }
+
+export interface BoardHandleUserInput {
+    triggerChange: (val: number) => void;
+}

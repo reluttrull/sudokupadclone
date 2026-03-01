@@ -1,20 +1,56 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Board from "./Board"
 import Controls from "./Controls"
 import { InputType } from '../enums'
+import { type Cell } from '../interfaces'
 
 function Puzzle() {
     const [inputType, setInputType] = useState<InputType>(InputType.BigNumber);
+    const [selectedSquare, setSelectedSquare] = useState<number | null>(null);
+    const mockProvidedValues = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const [cells, setCells] = useState<Cell[]>([]);
+
+    useEffect(() => {
+        const indices = Array.from({ length: 81 }, (_, i) => i);
+        indices.sort(() => Math.random() - 0.5);
+        const tmp = new Array(81);
+        for (let i: number = 0; i < tmp.length; i++) {
+            tmp[i] = { value: null, centerNotes: [], cornerNotes: [], isProvided: false, index: i };
+        }
+        for (let i: number = 0; i < mockProvidedValues.length; i++) {
+            tmp[indices[i]] = { ...tmp[indices[i]], value: mockProvidedValues[i], isProvided: true };
+        };
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setCells(tmp);
+    }, []);
     const handleInputTypeChanged = (inputType: InputType) => {
         console.log(inputType == InputType.BigNumber);
         setInputType(inputType);
+    }
+    const handleSelectedSquareChanged = (square:number) => {
+        setSelectedSquare(square);
+    }
+    const handleUserInput = (value: number) => {
+        switch (inputType) {
+            case InputType.BigNumber:
+                {
+                    const tmp = cells.map((cell) => {
+                        if (cell.index === selectedSquare) return { ...cell, value: value };
+                        return cell;
+                    });
+                    setCells(tmp);
+                }
+                break;
+            default:
+                break;
+        }
     }
     
 
     return (
         <>
-            <Board />
-            <Controls activeInputType={inputType} onInputTypeChanged={handleInputTypeChanged} />
+            <Board cells={cells} selectedSquare={selectedSquare} onSelectedSquareChanged={handleSelectedSquareChanged} />
+            <Controls activeInputType={inputType} onInputTypeChanged={handleInputTypeChanged} onUserInput={handleUserInput} />
         </>
     )
 }

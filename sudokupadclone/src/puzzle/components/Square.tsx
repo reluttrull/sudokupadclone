@@ -7,9 +7,13 @@ interface SquareProps {
 };
 
 function Square({ cellData, isSelected, onSquareSelected }: SquareProps) {
+    const handleSquareClick = () => {
+        if (!cellData.isProvided) onSquareSelected(cellData.index);
+    };
+
     return (
         <>
-            <div className={isSelected ? 'selected-square square' : 'square'} onClick={() => onSquareSelected(cellData.index)} ><span className="square-value">
+            <div className={isSelected ? 'selected-square square' : 'square'} onClick={handleSquareClick} ><span className="square-value">
                 {cellData.isProvided && (<span className="provided-value">{cellData.value}</span>)}
                 {!cellData.isProvided && (<span className="entered-value">{cellData.value}</span>)}
             </span></div>

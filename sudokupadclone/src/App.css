@@ -56,6 +56,13 @@
     min-width: clamp(14px, 24px, 30px);
     aspect-ratio: 1;
     border: 1px solid #ccc;
+    display: grid;
+    place-items: center;
+    grid-template-areas: "overlap";
+}
+
+.square-layer {
+    grid-area: overlap;
 }
 
 .square input {
@@ -65,6 +72,12 @@
 .square-value {
     font-size: 24px;
     text-align: justify-all;
+}
+
+.square-center-notes {
+    font-size: 7px;
+    text-align: justify-all;
+    color: lightgray;
 }
 
 .active-button {

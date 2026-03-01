@@ -18,6 +18,7 @@ function Board({ cells, selectedSquare, onSelectedSquareChanged }: BoardProps) {
         <>
             <div className="board">
                 {cells.map((cell) => (<Square
+                    key={`square${cell.index}`}
                     cellData={cell}
                     isSelected={cell.index === selectedSquare}
                     onSquareSelected={handleSquareSelected} />

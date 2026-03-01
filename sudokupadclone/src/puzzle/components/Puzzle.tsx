@@ -24,7 +24,6 @@ function Puzzle() {
         setCells(tmp);
     }, []);
     const handleInputTypeChanged = (inputType: InputType) => {
-        console.log(inputType == InputType.BigNumber);
         setInputType(inputType);
     }
     const handleSelectedSquareChanged = (square:number) => {
@@ -36,6 +35,15 @@ function Puzzle() {
                 {
                     const tmp = cells.map((cell) => {
                         if (cell.index === selectedSquare) return { ...cell, value: value };
+                        return cell;
+                    });
+                    setCells(tmp);
+                }
+                break;
+            case InputType.SmallCenterNumber:
+                {
+                    const tmp = cells.map((cell) => {
+                        if (cell.index === selectedSquare) return { ...cell, centerNotes: [...cell.centerNotes, value] };
                         return cell;
                     });
                     setCells(tmp);

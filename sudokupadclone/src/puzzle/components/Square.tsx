@@ -13,10 +13,15 @@ function Square({ cellData, isSelected, onSquareSelected }: SquareProps) {
 
     return (
         <>
-            <div className={isSelected ? 'selected-square square' : 'square'} onClick={handleSquareClick} ><span className="square-value">
-                {cellData.isProvided && (<span className="provided-value">{cellData.value}</span>)}
-                {!cellData.isProvided && (<span className="entered-value">{cellData.value}</span>)}
-            </span></div>
+            <div className={isSelected ? 'selected-square square' : 'square'} onClick={handleSquareClick}>
+                <span className="square-center-notes square-layer">
+                    {cellData.centerNotes.join('')}
+                </span>
+                <span className="square-value square-layer">
+                    {cellData.isProvided && (<span className="provided-value">{cellData.value}</span>)}
+                    {!cellData.isProvided && (<span className="entered-value">{cellData.value}</span>)}
+                </span>
+            </div>
         </>
     )
 }

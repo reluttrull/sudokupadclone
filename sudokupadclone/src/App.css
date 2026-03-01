@@ -102,3 +102,11 @@
 .selected-square {
     background-color: lightgoldenrodyellow;
 }
+
+.provided-value {
+    color: black;
+}
+
+.provided-value {
+    color: dimgray;
+}

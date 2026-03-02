@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Board from "./Board"
 import Controls from "./Controls"
-import { InputType } from '../enums'
+import { InputType, UserAction } from '../enums'
 import { type Cell } from '../interfaces'
 
 function Puzzle() {
@@ -53,12 +53,48 @@ function Puzzle() {
                 break;
         }
     }
+
+    const handleUserAction = (userAction: UserAction) => {
+        switch (userAction) {
+            case UserAction.Backspace:
+                handleBackspace();
+                break;
+            default:
+                break;
+        }
+    }
+
+    const handleBackspace = () => {
+        switch (inputType) {
+            case InputType.BigNumber:
+                {
+                    const tmp = cells.map((cell) => {
+                        if (cell.index === selectedSquare) return { ...cell, value: null };
+                        return cell;
+                    });
+                    setCells(tmp);
+                }
+                break;
+            case InputType.SmallCenterNumber:
+                {
+                    if (cells[selectedSquare].length == 0) break;
+                    const tmp = cells.map((cell) => {
+                        if (cell.index === selectedSquare) return { ...cell, centerNotes: cell.centerNotes.slice(0, -1) };
+                        return cell;
+                    });
+                    setCells(tmp);
+                }
+                break;
+            default:
+                break;
+        }
+    }
     
 
     return (
         <>
             <Board cells={cells} selectedSquare={selectedSquare} onSelectedSquareChanged={handleSelectedSquareChanged} />
-            <Controls activeInputType={inputType} onInputTypeChanged={handleInputTypeChanged} onUserInput={handleUserInput} />
+            <Controls activeInputType={inputType} onInputTypeChanged={handleInputTypeChanged} onUserInput={handleUserInput} onUserAction={handleUserAction} />
         </>
     )
 }

@@ -6,3 +6,9 @@ export const InputType = {
 } as const;
 
 export type InputType = typeof InputType[keyof typeof InputType];
+
+export const UserAction = {
+    Backspace: 0
+} as const;
+
+export type UserAction = typeof UserAction[keyof typeof UserAction];

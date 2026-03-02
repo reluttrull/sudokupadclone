@@ -1,17 +1,20 @@
 import React from 'react';
+import { MdBackspace } from 'react-icons/md'
 import { RiNumber1, RiNumber2, RiNumber3, RiNumber4, RiNumber5, RiNumber6, RiNumber7, RiNumber8, RiNumber9, RiNumber0 } from 'react-icons/ri'
-import { InputType } from '../enums'
-import { useHotkeys } from '../../utils/useHotkeys'
+import { InputType, UserAction } from '../enums'
+import { useNumberHotkeys, useControlHotkeys } from '../../utils/useHotkeys'
 
 interface ControlsProps {
     activeInputType: InputType,
     onInputTypeChanged: (inputType: InputType) => void,
-    onUserInput: (value: number) => void
+    onUserInput: (value: number) => void,
+    onUserAction: (userAction: UserAction) => void
 };
-function Controls({ activeInputType, onInputTypeChanged, onUserInput }: ControlsProps) {
+function Controls({ activeInputType, onInputTypeChanged, onUserInput, onUserAction }: ControlsProps) {
     const numberKeys = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
     const numberKeyIcons = [RiNumber1, RiNumber2, RiNumber3, RiNumber4, RiNumber5, RiNumber6, RiNumber7, RiNumber8, RiNumber9, RiNumber0];
-    useHotkeys(onUserInput);
+    useNumberHotkeys(onUserInput);
+    useControlHotkeys(onUserAction);
 
     return (
         <>
@@ -29,6 +32,7 @@ function Controls({ activeInputType, onInputTypeChanged, onUserInput }: Controls
                             </button>
                         );
                     })}
+                    <button key="backspace" className="number-key square-button-icon" onClick={() => onUserAction(UserAction.Backspace)}><MdBackspace /></button>
                 </div>
                 <div className="controls-item">
                     <div><button className={activeInputType == InputType.BigNumber ? 'active-button square-button-icon' : 'inactive-button square-button-icon'}

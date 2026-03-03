@@ -9,6 +9,8 @@ function Puzzle() {
     const [selectedSquare, setSelectedSquare] = useState<number | null>(null);
     const mockProvidedValues = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     const [cells, setCells] = useState<Cell[]>([]);
+    const [undoStack, setUndoStack] = useState<Cell[][]>([]);
+    const [redoStack, setRedoStack] = useState<Cell[][]>([]);
 
     useEffect(() => {
         const indices = Array.from({ length: 81 }, (_, i) => i);
@@ -37,6 +39,8 @@ function Puzzle() {
                         if (cell.index === selectedSquare) return { ...cell, value: value };
                         return cell;
                     });
+                    updateUndoStack();
+                    setRedoStack([]);
                     setCells(tmp);
                 }
                 break;
@@ -46,6 +50,8 @@ function Puzzle() {
                         if (cell.index === selectedSquare) return { ...cell, centerNotes: [...cell.centerNotes, value] };
                         return cell;
                     });
+                    updateUndoStack();
+                    setRedoStack([]);
                     setCells(tmp);
                 }
                 break;
@@ -58,6 +64,12 @@ function Puzzle() {
         switch (userAction) {
             case UserAction.Backspace:
                 handleBackspace();
+                break;
+            case UserAction.Undo:
+                handleUndo();
+                break;
+            case UserAction.Redo:
+                handleRedo();
                 break;
             default:
                 break;
@@ -72,16 +84,20 @@ function Puzzle() {
                         if (cell.index === selectedSquare) return { ...cell, value: null };
                         return cell;
                     });
+                    updateUndoStack();
+                    setRedoStack([]);
                     setCells(tmp);
                 }
                 break;
             case InputType.SmallCenterNumber:
                 {
-                    if (cells[selectedSquare].length == 0) break;
+                    if (selectedSquare != null && cells[selectedSquare].centerNotes.length == 0) break;
                     const tmp = cells.map((cell) => {
                         if (cell.index === selectedSquare) return { ...cell, centerNotes: cell.centerNotes.slice(0, -1) };
                         return cell;
                     });
+                    updateUndoStack();
+                    setRedoStack([]);
                     setCells(tmp);
                 }
                 break;
@@ -89,12 +105,39 @@ function Puzzle() {
                 break;
         }
     }
+
+    const handleUndo = () => {
+        if (undoStack.length == 0) return;
+        updateRedoStack();
+        setCells(undoStack[undoStack.length - 1]);
+        setUndoStack(undoStack.slice(0, -1));
+    }
+
+    const handleRedo = () => {
+        if (redoStack.length == 0) return;
+        updateUndoStack();
+        setCells(redoStack[redoStack.length - 1]);
+        setRedoStack(redoStack.slice(0, -1));
+    }
+
+    const updateUndoStack = () => {
+        const tmp = undoStack;
+        tmp.push(structuredClone(cells));
+        setUndoStack(tmp);
+    }
+
+    const updateRedoStack = () => {
+        const tmp = redoStack;
+        tmp.push(structuredClone(cells));
+        setRedoStack(tmp);
+    }
     
 
     return (
         <>
             <Board cells={cells} selectedSquare={selectedSquare} onSelectedSquareChanged={handleSelectedSquareChanged} />
-            <Controls activeInputType={inputType} onInputTypeChanged={handleInputTypeChanged} onUserInput={handleUserInput} onUserAction={handleUserAction} />
+            <Controls activeInputType={inputType} isUndoEnabled={undoStack.length > 0} isRedoEnabled={redoStack.length > 0}
+                onInputTypeChanged={handleInputTypeChanged} onUserInput={handleUserInput} onUserAction={handleUserAction} />
         </>
     )
 }

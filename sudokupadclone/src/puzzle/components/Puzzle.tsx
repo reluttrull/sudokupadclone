@@ -91,7 +91,7 @@ function Puzzle() {
                 break;
             case InputType.SmallCenterNumber:
                 {
-                    if (selectedSquare != null && cells[selectedSquare].centerNotes.length == 0) break;
+                    if (selectedSquare !== null && cells[selectedSquare].centerNotes.length === 0) break;
                     const tmp = cells.map((cell) => {
                         if (cell.index === selectedSquare) return { ...cell, centerNotes: cell.centerNotes.slice(0, -1) };
                         return cell;
@@ -107,14 +107,14 @@ function Puzzle() {
     }
 
     const handleUndo = () => {
-        if (undoStack.length == 0) return;
+        if (undoStack.length === 0) return;
         updateRedoStack();
         setCells(undoStack[undoStack.length - 1]);
         setUndoStack(undoStack.slice(0, -1));
     }
 
     const handleRedo = () => {
-        if (redoStack.length == 0) return;
+        if (redoStack.length === 0) return;
         updateUndoStack();
         setCells(redoStack[redoStack.length - 1]);
         setRedoStack(redoStack.slice(0, -1));

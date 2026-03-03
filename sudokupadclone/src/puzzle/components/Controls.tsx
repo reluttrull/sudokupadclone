@@ -32,30 +32,28 @@ function Controls({ activeInputType, isUndoEnabled, isRedoEnabled, onInputTypeCh
                     {numberKeys.map((key, index) => {
                         const Icon = numberKeyIcons[index];
                         return (
-                            <button
-                                key={key}
-                                className="number-key square-button-icon"
-                                onClick={() => onUserInput(key)}
-                            >
+                            <button key={key} className="number-key square-button-icon" onClick={() => onUserInput(key)}>
                                 <Icon />
                             </button>
                         );
                     })}
-                    <button className="number-key square-button-icon" onClick={() => onUserAction(UserAction.Backspace)}><MdBackspace /></button>
+                    <button className="number-key square-button-icon" onClick={() => onUserAction(UserAction.Backspace)}>
+                        <MdBackspace />
+                    </button>
                 </div>
                 <div className="controls-item">
-                    <div><button className={activeInputType == InputType.BigNumber ? 'active-button square-button-icon' : 'inactive-button square-button-icon'}
+                    <button className={activeInputType == InputType.BigNumber ? 'active-button square-button-icon' : 'inactive-button square-button-icon'}
                                 onClick={() => onInputTypeChanged(InputType.BigNumber)} >
                         <img src="/bigNumberInput.png" />
-                    </button></div>
-                    <div><button className={activeInputType == InputType.SmallCenterNumber ? 'active-button square-button-icon' : 'inactive-button square-button-icon'}
+                    </button>
+                    <button className={activeInputType == InputType.SmallCenterNumber ? 'active-button square-button-icon' : 'inactive-button square-button-icon'}
                                 onClick={() => onInputTypeChanged(InputType.SmallCenterNumber)}>
                         <img src="/smallCenterNumbersInput.png" />
-                    </button></div>
-                    <div><button className={activeInputType == InputType.SmallCornerNumber ? 'active-button square-button-icon' : 'inactive-button square-button-icon'}
+                    </button>
+                    <button className={activeInputType == InputType.SmallCornerNumber ? 'active-button square-button-icon' : 'inactive-button square-button-icon'}
                         onClick={() => onInputTypeChanged(InputType.SmallCornerNumber)}>
                         <img src="/smallCornerNumbersInput.png" />
-                    </button></div>
+                    </button>
                 </div>
             </div>
         </>

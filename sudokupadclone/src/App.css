@@ -89,7 +89,12 @@
 }
 
 .controls-container {
-    display:flex;
+    display: flex;
+}
+
+.general-controls {
+    display: flex;
+    flex-direction: column;
 }
 
 .controls-item {

@@ -11,7 +11,6 @@ function Board({ cells, selectedSquare, onSelectedSquareChanged }: BoardProps) {
 
     const handleSquareSelected = (square: number) => {
         onSelectedSquareChanged(square);
-        console.log(`selected square ${square}`);
     };
 
     return (

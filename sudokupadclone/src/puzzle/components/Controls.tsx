@@ -1,4 +1,4 @@
-import { MdBackspace, MdUndo, MdRedo } from 'react-icons/md'
+import { MdBackspace, MdUndo, MdRedo, MdChecklist } from 'react-icons/md'
 import { RiNumber1, RiNumber2, RiNumber3, RiNumber4, RiNumber5, RiNumber6, RiNumber7, RiNumber8, RiNumber9, RiNumber0 } from 'react-icons/ri'
 import { InputType, UserAction } from '../enums'
 import { useNumberHotkeys, useControlHotkeys } from '../../utils/useHotkeys'
@@ -26,6 +26,9 @@ function Controls({ activeInputType, isUndoEnabled, isRedoEnabled, onInputTypeCh
                     </button>
                     <button className="square-button-icon" disabled={!isRedoEnabled} onClick={() => onUserAction(UserAction.Redo)}>
                         <MdRedo />
+                    </button>
+                    <button className="square-button-icon" onClick={() => onUserAction(UserAction.Validate)}>
+                        <MdChecklist />
                     </button>
                 </div>
                 <div className="number-pad controls-item">

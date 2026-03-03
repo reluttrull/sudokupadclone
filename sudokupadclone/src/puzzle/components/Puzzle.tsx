@@ -3,6 +3,7 @@ import Board from "./Board"
 import Controls from "./Controls"
 import { InputType, UserAction } from '../enums'
 import { type Cell } from '../interfaces'
+import { checkSolution } from '../../utils/solutionTools'
 
 function Puzzle() {
     const [inputType, setInputType] = useState<InputType>(InputType.BigNumber);
@@ -71,6 +72,9 @@ function Puzzle() {
             case UserAction.Redo:
                 handleRedo();
                 break;
+            case UserAction.Validate:
+                handleValidate();
+                break;
             default:
                 break;
         }
@@ -118,6 +122,12 @@ function Puzzle() {
         updateUndoStack();
         setCells(redoStack[redoStack.length - 1]);
         setRedoStack(redoStack.slice(0, -1));
+    }
+
+    const handleValidate = () => {
+        const success = checkSolution(cells);
+        if (success) alert('good job!');
+        else alert('nope');
     }
 
     const updateUndoStack = () => {

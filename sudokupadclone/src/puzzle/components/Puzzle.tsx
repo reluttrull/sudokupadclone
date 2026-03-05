@@ -9,8 +9,9 @@ import { validFinished } from '../../utils/testPuzzles'
 function Puzzle() {
     const [inputType, setInputType] = useState<InputType>(InputType.BigNumber);
     const [selectedSquare, setSelectedSquare] = useState<number | null>(null);
-    const mockProvidedValues = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    //const mockProvidedValues = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     const [cells, setCells] = useState<Cell[]>([]);
+    const [errorIndices, setErrorIndices] = useState<number[]>([]);
     const [undoStack, setUndoStack] = useState<Cell[][]>([]);
     const [redoStack, setRedoStack] = useState<Cell[][]>([]);
 
@@ -18,15 +19,15 @@ function Puzzle() {
         const indices = Array.from({ length: 81 }, (_, i) => i);
         indices.sort(() => Math.random() - 0.5);
         const tmp = new Array(81);
-        for (let i: number = 0; i < tmp.length; i++) {
-            tmp[i] = { value: null, centerNotes: [], cornerNotes: [], isProvided: false, index: i };
-        }
-        for (let i: number = 0; i < mockProvidedValues.length; i++) {
-            tmp[indices[i]] = { ...tmp[indices[i]], value: mockProvidedValues[i], isProvided: true };
-        };
-        //for (let i: number = 0; i < validFinished.length; i++) {
-        //    tmp[i] = { value: validFinished[i], centerNotes: [], cornerNotes: [], isProvided: false, index: i };
+        //for (let i: number = 0; i < tmp.length; i++) {
+        //    tmp[i] = { value: null, centerNotes: [], cornerNotes: [], isProvided: false, index: i };
         //}
+        //for (let i: number = 0; i < mockProvidedValues.length; i++) {
+        //    tmp[indices[i]] = { ...tmp[indices[i]], value: mockProvidedValues[i], isProvided: true };
+        //};
+        for (let i: number = 0; i < validFinished.length; i++) {
+            tmp[i] = { value: validFinished[i], centerNotes: [], cornerNotes: [], isProvided: false, index: i };
+        }
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setCells(tmp);
     }, []);
@@ -63,20 +64,25 @@ function Puzzle() {
             default:
                 break;
         }
+        setErrorIndices([]);
     }
 
     const handleUserAction = (userAction: UserAction) => {
         switch (userAction) {
             case UserAction.Backspace:
                 handleBackspace();
+                setErrorIndices([]);
                 break;
             case UserAction.Undo:
                 handleUndo();
+                setErrorIndices([]);
                 break;
             case UserAction.Redo:
                 handleRedo();
+                setErrorIndices([]);
                 break;
             case UserAction.Validate:
+                setErrorIndices([]);
                 handleValidate();
                 break;
             case UserAction.ArrowUp:
@@ -135,9 +141,10 @@ function Puzzle() {
     }
 
     const handleValidate = () => {
-        const success = checkSolution(cells);
-        if (success) alert('good job!');
+        const result = checkSolution(cells);
+        if (result.length === 0) alert('good job!');
         else alert('nope');
+        setErrorIndices(result);
     }
 
     const handleArrowKey = (action: UserAction) => {
@@ -180,7 +187,7 @@ function Puzzle() {
 
     return (
         <>
-            <Board cells={cells} selectedSquare={selectedSquare} onSelectedSquareChanged={handleSelectedSquareChanged} />
+            <Board cells={cells} errorIndices={errorIndices}  selectedSquare={selectedSquare} onSelectedSquareChanged={handleSelectedSquareChanged} />
             <Controls activeInputType={inputType} isUndoEnabled={undoStack.length > 0} isRedoEnabled={redoStack.length > 0}
                 onInputTypeChanged={handleInputTypeChanged} onUserInput={handleUserInput} onUserAction={handleUserAction} />
         </>

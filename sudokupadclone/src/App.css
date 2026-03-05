@@ -121,6 +121,10 @@
     background-color: lightgoldenrodyellow;
 }
 
+.error-square {
+    background-color: lightcoral;
+}
+
 .provided-value {
     color: black;
 }

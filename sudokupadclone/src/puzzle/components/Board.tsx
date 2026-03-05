@@ -3,11 +3,12 @@ import { type Cell } from '../interfaces'
 
 interface BoardProps {
     cells: Cell[],
+    errorIndices: number[],
     selectedSquare: number | null,
     onSelectedSquareChanged: (square: number) => void
 };
 
-function Board({ cells, selectedSquare, onSelectedSquareChanged }: BoardProps) {
+function Board({ cells, errorIndices, selectedSquare, onSelectedSquareChanged }: BoardProps) {
 
     const handleSquareSelected = (square: number) => {
         onSelectedSquareChanged(square);
@@ -19,6 +20,7 @@ function Board({ cells, selectedSquare, onSelectedSquareChanged }: BoardProps) {
                 {cells.map((cell) => (<Square
                     key={`square${cell.index}`}
                     cellData={cell}
+                    hasError={errorIndices.includes(cell.index)}
                     isSelected={cell.index === selectedSquare}
                     onSquareSelected={handleSquareSelected} />
                 ))}

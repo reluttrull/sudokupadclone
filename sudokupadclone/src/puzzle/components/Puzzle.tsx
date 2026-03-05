@@ -4,6 +4,7 @@ import Controls from "./Controls"
 import { InputType, UserAction } from '../enums'
 import { type Cell } from '../interfaces'
 import { checkSolution } from '../../utils/solutionTools'
+import { validFinished } from '../../utils/testPuzzles'
 
 function Puzzle() {
     const [inputType, setInputType] = useState<InputType>(InputType.BigNumber);
@@ -23,6 +24,9 @@ function Puzzle() {
         for (let i: number = 0; i < mockProvidedValues.length; i++) {
             tmp[indices[i]] = { ...tmp[indices[i]], value: mockProvidedValues[i], isProvided: true };
         };
+        //for (let i: number = 0; i < validFinished.length; i++) {
+        //    tmp[i] = { value: validFinished[i], centerNotes: [], cornerNotes: [], isProvided: false, index: i };
+        //}
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setCells(tmp);
     }, []);

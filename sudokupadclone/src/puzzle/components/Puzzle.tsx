@@ -4,12 +4,12 @@ import Controls from "./Controls"
 import { InputType, UserAction } from '../enums'
 import { type Cell } from '../interfaces'
 import { checkSolution } from '../../utils/solutionTools'
-import { validFinished } from '../../utils/testPuzzles'
+//import { validFinished } from '../../utils/testPuzzles'
 
 function Puzzle() {
     const [inputType, setInputType] = useState<InputType>(InputType.BigNumber);
     const [selectedSquare, setSelectedSquare] = useState<number | null>(null);
-    //const mockProvidedValues = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const mockProvidedValues = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     const [cells, setCells] = useState<Cell[]>([]);
     const [errorIndices, setErrorIndices] = useState<number[]>([]);
     const [undoStack, setUndoStack] = useState<Cell[][]>([]);
@@ -19,15 +19,15 @@ function Puzzle() {
         const indices = Array.from({ length: 81 }, (_, i) => i);
         indices.sort(() => Math.random() - 0.5);
         const tmp = new Array(81);
-        //for (let i: number = 0; i < tmp.length; i++) {
-        //    tmp[i] = { value: null, centerNotes: [], cornerNotes: [], isProvided: false, index: i };
-        //}
-        //for (let i: number = 0; i < mockProvidedValues.length; i++) {
-        //    tmp[indices[i]] = { ...tmp[indices[i]], value: mockProvidedValues[i], isProvided: true };
-        //};
-        for (let i: number = 0; i < validFinished.length; i++) {
-            tmp[i] = { value: validFinished[i], centerNotes: [], cornerNotes: [], isProvided: false, index: i };
+        for (let i: number = 0; i < tmp.length; i++) {
+            tmp[i] = { value: null, centerNotes: [], cornerNotes: [], isProvided: false, index: i };
         }
+        for (let i: number = 0; i < mockProvidedValues.length; i++) {
+            tmp[indices[i]] = { ...tmp[indices[i]], value: mockProvidedValues[i], isProvided: true };
+        };
+        //for (let i: number = 0; i < validFinished.length; i++) {
+        //    tmp[i] = { value: validFinished[i], centerNotes: [], cornerNotes: [], isProvided: false, index: i };
+        //}
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setCells(tmp);
     }, []);

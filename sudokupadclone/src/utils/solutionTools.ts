@@ -1,6 +1,9 @@
 import { type Cell } from '../puzzle/interfaces'
 
 export function checkSolution(solution: Cell[]): number[] {
+    // check unfilled
+    const nullCells = solution.filter(elem => elem.value === null);
+    if (nullCells.length > 0) return [...new Set(nullCells.map((elem) => { return elem.index; }))]
     // check no dupes
     for (let i = 1; i <= 9; i++) {
         const sameValues = solution.filter(n => n.value == i);

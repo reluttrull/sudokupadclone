@@ -16,6 +16,14 @@ export function useNumberHotkeys(onUserInput: (n: number) => void) {
 
 export function useControlHotkeys(onUserAction: (userAction: UserAction) => void) {
     const handler = useCallback((e: KeyboardEvent) => {
+        if (e.ctrlKey && e.key === 'z') {
+            onUserAction(UserAction.Undo);
+            return;
+        }
+        if (e.ctrlKey && e.key === 'y') {
+            onUserAction(UserAction.Redo);
+            return;
+        }
         switch (e.key) {
             case 'Backspace':
                 onUserAction(UserAction.Backspace);

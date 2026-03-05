@@ -42,7 +42,7 @@ function Puzzle() {
             case InputType.BigNumber:
                 {
                     const tmp = cells.map((cell) => {
-                        if (cell.index === selectedSquare) return { ...cell, value: value };
+                        if (cell.index === selectedSquare && !cell.isProvided) return { ...cell, value: value, centerNotes: [], cornerNotes: [] };
                         return cell;
                     });
                     updateUndoStack();

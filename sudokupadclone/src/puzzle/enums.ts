@@ -11,7 +11,11 @@ export const UserAction = {
     Backspace: 0,
     Undo: 1,
     Redo: 2,
-    Validate: 3
+    Validate: 3,
+    ArrowUp: 4,
+    ArrowDown: 5,
+    ArrowLeft: 6,
+    ArrowRight: 7
 } as const;
 
 export type UserAction = typeof UserAction[keyof typeof UserAction];

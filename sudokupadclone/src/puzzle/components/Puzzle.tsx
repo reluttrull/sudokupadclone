@@ -79,6 +79,12 @@ function Puzzle() {
             case UserAction.Validate:
                 handleValidate();
                 break;
+            case UserAction.ArrowUp:
+            case UserAction.ArrowDown:
+            case UserAction.ArrowLeft:
+            case UserAction.ArrowRight:
+                handleArrowKey(userAction);
+                break;
             default:
                 break;
         }
@@ -132,6 +138,31 @@ function Puzzle() {
         const success = checkSolution(cells);
         if (success) alert('good job!');
         else alert('nope');
+    }
+
+    const handleArrowKey = (action: UserAction) => {
+        switch (action) {
+            case UserAction.ArrowUp:
+                if (selectedSquare < 9) return;
+                setSelectedSquare(selectedSquare - 9);
+                break;
+            case UserAction.ArrowDown:
+                if (selectedSquare > 71) return;
+                setSelectedSquare(selectedSquare + 9);
+                break;
+            case UserAction.ArrowLeft:
+                if (selectedSquare < 1) return;
+                if (selectedSquare % 9 == 0) return; // left edge
+                setSelectedSquare(selectedSquare - 1);
+                break;
+            case UserAction.ArrowRight:
+                if (selectedSquare > 79) return;
+                if (selectedSquare % 9 == 8) return; // right edge
+                setSelectedSquare(selectedSquare + 1);
+                break;
+            default:
+                break;
+        }
     }
 
     const updateUndoStack = () => {

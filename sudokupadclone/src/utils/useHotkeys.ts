@@ -16,7 +16,25 @@ export function useNumberHotkeys(onUserInput: (n: number) => void) {
 
 export function useControlHotkeys(onUserAction: (userAction: UserAction) => void) {
     const handler = useCallback((e: KeyboardEvent) => {
-        if (e.key == 'Backspace') onUserAction(UserAction.Backspace);
+        switch (e.key) {
+            case 'Backspace':
+                onUserAction(UserAction.Backspace);
+                break;
+            case 'ArrowUp':
+                onUserAction(UserAction.ArrowUp);
+                break;
+            case 'ArrowDown':
+                onUserAction(UserAction.ArrowDown);
+                break;
+            case 'ArrowLeft':
+                onUserAction(UserAction.ArrowLeft);
+                break;
+            case 'ArrowRight':
+                onUserAction(UserAction.ArrowRight);
+                break;
+            default:
+                break;
+        }
     }, [onUserAction]);
 
     useEffect(() => {

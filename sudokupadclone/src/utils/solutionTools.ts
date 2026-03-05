@@ -1,13 +1,13 @@
 import { type Cell } from '../puzzle/interfaces'
 
 export function checkSolution(solution: Cell[]): number[] {
-    let errorIndices:number[] = [];
     // check no dupes
     for (let i = 1; i <= 9; i++) {
         const sameValues = solution.filter(n => n.value == i);
         if (sameValues.length != 9) {
             console.log('too few or too many of value', i);
-            errorIndices = [...errorIndices, ...sameValues.map((elem) => { return elem.index; })];
+            return [...new Set(sameValues.map((elem) => { return elem.index; })),
+                    ...solution.filter(elem => elem.value === null).map((elem) => { return elem.index; })];
         }
     }
     // rows
@@ -17,17 +17,17 @@ export function checkSolution(solution: Cell[]): number[] {
         console.log('checking row starting at', i, row);
         if (rowValues.reduce((acc, curr) => acc + curr, 0) !== 45) {
             console.log('problem in row starting at', i, row);
-            errorIndices = [...errorIndices, ...row.map((elem) => { return elem.index; })];
+            return [...new Set(row.map((elem) => { return elem.index; }))];
         }
     }
     // cols
     for (let i = 0; i <= 8; i++) {
-        const col = solution.filter((elem, idx) => idx % 9 === 8);
+        const col = solution.filter((elem, idx) => idx % 9 === i);
         const colValues = col.map((elem) => { return elem.value ?? 0; });
         console.log('checking col starting at', i, col);
         if (colValues.reduce((acc, curr) => acc + curr, 0) !== 45) {
             console.log('problem in col starting at', i, col);
-            errorIndices = [...errorIndices, ...col.map((elem) => { return elem.index; })];
+            return [...new Set(col.map((elem) => { return elem.index; }))];
         }
     }
     // boxes
@@ -39,10 +39,9 @@ export function checkSolution(solution: Cell[]): number[] {
             console.log('checking box starting at', b, box);
             if (boxValues.reduce((acc, curr) => acc + curr, 0) !== 45) {
                 console.log('problem in box starting at', b, box);
-                errorIndices = [...errorIndices, ...box.map((elem) => { return elem.index; })];
+                return [...new Set(box.map((elem) => { return elem.index; }))];
             }
         }
     }
-    console.log('returning', [...new Set(errorIndices)]);
-    return [...new Set(errorIndices)];
+    return [];
 }

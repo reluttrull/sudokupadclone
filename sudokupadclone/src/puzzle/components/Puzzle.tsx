@@ -91,6 +91,10 @@ function Puzzle() {
             case UserAction.ArrowRight:
                 handleArrowKey(userAction);
                 break;
+            case UserAction.Reset:
+                handleReset();
+                setErrorIndices([]);
+                break;
             default:
                 break;
         }
@@ -170,6 +174,17 @@ function Puzzle() {
             default:
                 break;
         }
+    }
+
+    const handleReset = () => {
+        const tmp = cells.map((cell) => {
+            return cell.isProvided
+                ? { ...cell, centerNotes: [], cornerNotes: [] }
+                : { ...cell, value: null, centerNotes: [], cornerNotes: [] };
+        });
+        setCells(tmp);
+        setUndoStack([]);
+        setRedoStack([]);
     }
 
     const updateUndoStack = () => {

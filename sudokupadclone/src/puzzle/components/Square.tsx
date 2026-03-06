@@ -12,9 +12,16 @@ function Square({ cellData, hasError, isSelected, onSquareSelected }: SquareProp
         if (!cellData.isProvided) onSquareSelected(cellData.index);
     };
 
+    const getClasses = () => {
+        if (hasError) return 'error-square square';
+        if (isSelected) return 'selected-square square';
+        if (cellData.color != null) return `${cellData.color} square`;
+        return 'square';
+    }
+
     return (
         <>
-            <div className={hasError ? 'error-square square' : (isSelected ? 'selected-square square' : 'square')} onClick={handleSquareClick}>
+            <div className={getClasses()} onClick={handleSquareClick}>
                 <span className="square-center-notes square-layer">
                     {cellData.centerNotes.join('')}
                 </span>

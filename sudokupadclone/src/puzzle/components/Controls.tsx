@@ -1,6 +1,7 @@
+import { useState } from 'react'
 import { MdBackspace, MdUndo, MdRedo, MdChecklist } from 'react-icons/md'
 import { RiNumber1, RiNumber2, RiNumber3, RiNumber4, RiNumber5, RiNumber6, RiNumber7, RiNumber8, RiNumber9, RiNumber0, RiResetLeftFill } from 'react-icons/ri'
-import { InputType, UserAction } from '../enums'
+import { InputType, UserAction, backgroundColors, Color } from '../enums'
 import { useNumberHotkeys, useControlHotkeys } from '../../utils/useHotkeys'
 
 interface ControlsProps {
@@ -12,10 +13,19 @@ interface ControlsProps {
     onUserAction: (userAction: UserAction) => void
 };
 function Controls({ activeInputType, isUndoEnabled, isRedoEnabled, onInputTypeChanged, onUserInput, onUserAction }: ControlsProps) {
+    const [isColorModalOpen, setIsColorModalOpen] = useState(false);
     const numberKeys = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
     const numberKeyIcons = [RiNumber1, RiNumber2, RiNumber3, RiNumber4, RiNumber5, RiNumber6, RiNumber7, RiNumber8, RiNumber9, RiNumber0];
     useNumberHotkeys(onUserInput);
     useControlHotkeys(onUserAction);
+
+    const openBackgroundColorModal = () => {
+        setIsColorModalOpen(true);
+    }
+
+    const closeBackgroundColorModal = () => {
+        setIsColorModalOpen(false);
+    }
 
     return (
         <>
@@ -60,8 +70,27 @@ function Controls({ activeInputType, isUndoEnabled, isRedoEnabled, onInputTypeCh
                         onClick={() => onInputTypeChanged(InputType.SmallCornerNumber)}>
                         <img src="/smallCornerNumbersInput.png" />
                     </button>
+                    <button className={backgroundColors.includes(activeInputType) ? 'active-button square-button-icon' : 'inactive-button square-button-icon'}
+                        onClick={openBackgroundColorModal}>
+                        <img src="/backgroundColors.png" />
+                    </button>
                 </div>
             </div>
+            {isColorModalOpen && (
+                <div className="modal-overlay" onClick={closeBackgroundColorModal}>
+                    <div className="modal" onClick={(e) => e.stopPropagation()}>
+                        <h3>Select Background Color</h3>
+
+                        <button onClick={() => onInputTypeChanged(InputType.BackgroundColorGreen)} className={Color.Green}>Green</button>
+                        <button onClick={() => onInputTypeChanged(InputType.BackgroundColorPurple)} className={Color.Purple}>Purple</button>
+                        <button onClick={() => onInputTypeChanged(InputType.BackgroundColorOrange)} className={Color.Orange}>Orange</button>
+                        <button onClick={() => onInputTypeChanged(InputType.BackgroundColorBlue)} className={Color.Blue}>Blue</button>
+                        <button onClick={() => onInputTypeChanged(InputType.BackgroundColorWhite)} className={Color.White}>White</button>
+
+                        <button onClick={closeBackgroundColorModal}>Close</button>
+                    </div>
+                </div>
+            )}
         </>
     )
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Board from "./Board"
 import Controls from "./Controls"
-import { InputType, UserAction } from '../enums'
+import { InputType, UserAction, backgroundColors, Color } from '../enums'
 import { type Cell } from '../interfaces'
 import { checkSolution } from '../../utils/solutionTools'
 //import { validFinished } from '../../utils/testPuzzles'
@@ -34,7 +34,10 @@ function Puzzle() {
     const handleInputTypeChanged = (inputType: InputType) => {
         setInputType(inputType);
     }
-    const handleSelectedSquareChanged = (square:number) => {
+    const handleSelectedSquareChanged = (square: number) => {
+        if (backgroundColors.includes(inputType)) {
+            handleBackgroundColorChange(square);
+        }
         setSelectedSquare(square);
     }
     const handleUserInput = (value: number) => {
@@ -185,6 +188,37 @@ function Puzzle() {
         setCells(tmp);
         setUndoStack([]);
         setRedoStack([]);
+    }
+
+    const handleBackgroundColorChange = (square: number) => {
+        let color = '#ffffff';
+        switch (inputType) {
+            case InputType.BackgroundColorGreen:
+                color = Color.Green;
+                break;
+            case InputType.BackgroundColorPurple:
+                color = Color.Purple;
+                break;
+            case InputType.BackgroundColorOrange:
+                color = Color.Orange;
+                break;
+            case InputType.BackgroundColorBlue:
+                color = Color.Blue;
+                break;
+            default:
+                break;
+        }
+        console.log('color', color);
+        const tmp = cells.map((cell) => {
+            if (cell.index === square) {
+                console.log('setting color at index', cell.index);
+                return { ...cell, color: color };
+            }
+            return cell;
+        });
+        updateUndoStack();
+        setRedoStack([]);
+        setCells(tmp);
     }
 
     const updateUndoStack = () => {

@@ -132,3 +132,41 @@
 .entered-value {
     color: cornflowerblue;
 }
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.green-background {
+    background-color: #c7e6aa55;
+}
+
+.purple-background {
+    background-color: #aba6e655;
+}
+
+.orange-background {
+    background-color: #e6c19755;
+}
+
+.blue-background {
+    background-color: #a6d8e655;
+}
+
+.white-background {
+    background-color: #ffffff55;
+}

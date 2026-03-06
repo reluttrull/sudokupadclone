@@ -25,6 +25,11 @@ function Square({ cellData, hasError, isSelected, onSquareSelected }: SquareProp
                 <span className="square-center-notes square-layer">
                     {cellData.centerNotes.join('')}
                 </span>
+                <span className="square-corner-notes square-layer">
+                    {cellData.cornerNotes.slice(0, 4).map((val) => (
+                        <div className="corner-note">{val}</div>
+                    ))}
+                </span>
                 <span className="square-value square-layer">
                     {cellData.isProvided && (<span className="provided-value">{cellData.value}</span>)}
                     {!cellData.isProvided && (<span className="entered-value">{cellData.value}</span>)}

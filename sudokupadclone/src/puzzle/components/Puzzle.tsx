@@ -64,6 +64,17 @@ function Puzzle() {
                     setCells(tmp);
                 }
                 break;
+            case InputType.SmallCornerNumber:
+                {
+                    const tmp = cells.map((cell) => {
+                        if (cell.index === selectedSquare) return { ...cell, cornerNotes: [...cell.cornerNotes, value] };
+                        return cell;
+                    });
+                    updateUndoStack();
+                    setRedoStack([]);
+                    setCells(tmp);
+                }
+                break;
             default:
                 break;
         }
@@ -121,6 +132,18 @@ function Puzzle() {
                     if (selectedSquare !== null && cells[selectedSquare].centerNotes.length === 0) break;
                     const tmp = cells.map((cell) => {
                         if (cell.index === selectedSquare) return { ...cell, centerNotes: cell.centerNotes.slice(0, -1) };
+                        return cell;
+                    });
+                    updateUndoStack();
+                    setRedoStack([]);
+                    setCells(tmp);
+                }
+                break;
+            case InputType.SmallCornerNumber:
+                {
+                    if (selectedSquare !== null && cells[selectedSquare].cornerNotes.length === 0) break;
+                    const tmp = cells.map((cell) => {
+                        if (cell.index === selectedSquare) return { ...cell, cornerNotes: cell.cornerNotes.slice(0, -1) };
                         return cell;
                     });
                     updateUndoStack();

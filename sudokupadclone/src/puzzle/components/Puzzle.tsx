@@ -3,8 +3,8 @@ import Board from "./Board"
 import Controls from "./Controls"
 import { InputType, UserAction, backgroundColors, Color } from '../enums'
 import { type Cell } from '../interfaces'
-import { checkSolution } from '../../utils/solutionTools'
-//import { validFinished } from '../../utils/testPuzzles'
+import { getSolutionErrorIndices, getConflictIndices } from '../../utils/solutionTools'
+//import { validFinished, invalidBoxes } from '../../utils/testPuzzles'
 
 function Puzzle() {
     const [inputType, setInputType] = useState<InputType>(InputType.BigNumber);
@@ -25,8 +25,8 @@ function Puzzle() {
         for (let i: number = 0; i < mockProvidedValues.length; i++) {
             tmp[indices[i]] = { ...tmp[indices[i]], value: mockProvidedValues[i], isProvided: true };
         };
-        //for (let i: number = 0; i < validFinished.length; i++) {
-        //    tmp[i] = { value: validFinished[i], centerNotes: [], cornerNotes: [], isProvided: false, index: i };
+        //for (let i: number = 0; i < invalidBoxes.length; i++) {
+        //    tmp[i] = { value: invalidBoxes[i], centerNotes: [], cornerNotes: [], isProvided: false, index: i };
         //}
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setCells(tmp);
@@ -51,6 +51,8 @@ function Puzzle() {
                     updateUndoStack();
                     setRedoStack([]);
                     setCells(tmp);
+                    const errs = getConflictIndices(tmp, selectedSquare ?? 0);
+                    setErrorIndices(errs);
                 }
                 break;
             case InputType.SmallCenterNumber:
@@ -62,6 +64,7 @@ function Puzzle() {
                     updateUndoStack();
                     setRedoStack([]);
                     setCells(tmp);
+                    setErrorIndices([]);
                 }
                 break;
             case InputType.SmallCornerNumber:
@@ -73,12 +76,12 @@ function Puzzle() {
                     updateUndoStack();
                     setRedoStack([]);
                     setCells(tmp);
+                    setErrorIndices([]);
                 }
                 break;
             default:
                 break;
         }
-        setErrorIndices([]);
     }
 
     const handleUserAction = (userAction: UserAction) => {
@@ -171,7 +174,7 @@ function Puzzle() {
     }
 
     const handleValidate = () => {
-        const result = checkSolution(cells);
+        const result = getSolutionErrorIndices(cells);
         if (result.length === 0) alert('good job!');
         else alert('nope');
         setErrorIndices(result);

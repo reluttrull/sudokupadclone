@@ -12,7 +12,6 @@ function Puzzle({ cellValues }: PuzzleProps) {
     const [inputType, setInputType] = useState<InputType>(InputType.BigNumber);
     const [selectionStart, setSelectionStart] = useState<number | null>(null);
     const [selectedSquares, setSelectedSquares] = useState<number[]>([]);
-    //const mockProvidedValues = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     const [cells, setCells] = useState<Cell[]>([]);
     const [errorIndices, setErrorIndices] = useState<number[]>([]);
     const [undoStack, setUndoStack] = useState<Cell[][]>([]);
@@ -22,12 +21,6 @@ function Puzzle({ cellValues }: PuzzleProps) {
         const indices = Array.from({ length: 81 }, (_, i) => i);
         indices.sort(() => Math.random() - 0.5);
         const tmp = new Array(81);
-        //for (let i: number = 0; i < tmp.length; i++) {
-        //    tmp[i] = { value: null, centerNotes: [], cornerNotes: [], isProvided: false, index: i };
-        //}
-        //for (let i: number = 0; i < mockProvidedValues.length; i++) {
-        //    tmp[indices[i]] = { ...tmp[indices[i]], value: mockProvidedValues[i], isProvided: true };
-        //};
         for (let i: number = 0; i < cellValues.length; i++) {
             tmp[i] = { value: cellValues[i], centerNotes: [], cornerNotes: [], isProvided: cellValues[i] !== null, index: i };
         }
@@ -167,7 +160,6 @@ function Puzzle({ cellValues }: PuzzleProps) {
                 break;
             case InputType.SmallCenterNumber:
                 {
-                    //if (selectedSquare !== null && cells[selectedSquare].centerNotes.length === 0) break;
                     const tmp = cells.map((cell) => {
                         if (selectedSquares.includes(cell.index)) return { ...cell, centerNotes: cell.centerNotes.slice(0, -1) };
                         return cell;
@@ -179,7 +171,6 @@ function Puzzle({ cellValues }: PuzzleProps) {
                 break;
             case InputType.SmallCornerNumber:
                 {
-                    //if (selectedSquare !== null && cells[selectedSquare].cornerNotes.length === 0) break;
                     const tmp = cells.map((cell) => {
                         if (selectedSquares.includes(cell.index)) return { ...cell, cornerNotes: cell.cornerNotes.slice(0, -1) };
                         return cell;

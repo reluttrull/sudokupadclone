@@ -23,10 +23,13 @@ function Square({ cellData, hasError, isSelected, onSquareSelected }: SquareProp
         <>
             <div className={getClasses()} onClick={handleSquareClick}>
                 <span className="square-center-notes square-layer">
-                    {cellData.centerNotes.join('')}
+                    {cellData.centerNotes.sort((a, b) => a - b)
+                                         .join('')}
                 </span>
                 <span className="square-corner-notes square-layer">
-                    {cellData.cornerNotes.slice(0, 4).map((val) => (
+                    {cellData.cornerNotes.sort((a, b) => a - b)
+                                         .slice(0, 4)
+                                         .map((val) => (
                         <div className="corner-note">{val}</div>
                     ))}
                 </span>

@@ -3,14 +3,10 @@ import { type Cell } from '../interfaces'
 interface SquareProps {
     cellData: Cell,
     hasError: boolean,
-    isSelected: boolean,
-    onSquareSelected: (index:number) => void
+    isSelected: boolean
 };
 
-function Square({ cellData, hasError, isSelected, onSquareSelected }: SquareProps) {
-    const handleSquareClick = () => {
-        if (!cellData.isProvided) onSquareSelected(cellData.index);
-    };
+function Square({ cellData, hasError, isSelected }: SquareProps) {
 
     const getClasses = () => {
         if (hasError) return 'error-square square';
@@ -21,7 +17,7 @@ function Square({ cellData, hasError, isSelected, onSquareSelected }: SquareProp
 
     return (
         <>
-            <div className={getClasses()} onClick={handleSquareClick}>
+            <div className={getClasses()} >
                 <span className="square-center-notes square-layer">
                     {cellData.centerNotes.sort((a, b) => a - b)
                                          .join('')}

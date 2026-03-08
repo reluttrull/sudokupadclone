@@ -8,7 +8,8 @@ import { getSolutionErrorIndices, getConflictIndices } from '../../utils/solutio
 
 function Puzzle() {
     const [inputType, setInputType] = useState<InputType>(InputType.BigNumber);
-    const [selectedSquare, setSelectedSquare] = useState<number | null>(null);
+    const [selectionStart, setSelectionStart] = useState<number | null>(null);
+    const [selectedSquares, setSelectedSquares] = useState<number[]>([]);
     const mockProvidedValues = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     const [cells, setCells] = useState<Cell[]>([]);
     const [errorIndices, setErrorIndices] = useState<number[]>([]);
@@ -34,31 +35,63 @@ function Puzzle() {
     const handleInputTypeChanged = (inputType: InputType) => {
         setInputType(inputType);
     }
-    const handleSelectedSquareChanged = (square: number) => {
-        if (backgroundColors.includes(inputType)) {
-            handleBackgroundColorChange(square);
-        }
-        setSelectedSquare(square);
+
+    const handleSelectionStart = (index: number) => {
+        setSelectionStart(index);
     }
+
+    const handleSelectionEnd = (idx: number) => {
+        console.log('start and end selection', selectionStart, idx);
+        if (selectionStart === null) return;
+        if (selectionStart === idx) {
+            setSelectedSquares([idx]);
+            if (backgroundColors.includes(inputType)) {
+                handleBackgroundColorChange(selectedSquares);
+            }
+            setSelectionStart(null);
+            return;
+        }
+        const min = Math.min(idx, selectionStart);
+        const max = Math.max(idx, selectionStart);
+        const startRow = Math.floor(min / 9);
+        const endRow = Math.floor(max / 9);
+        if (startRow === endRow) {
+            const length = Math.floor(max - min) + 1;
+            setSelectedSquares(Array.from({ length }, (_, index) => min + index));
+        } else {
+            const length = Math.floor((max - min) / 9) + 1;
+            setSelectedSquares(Array.from({ length }, (_, index) => min + index * 9));
+        }
+
+        if (backgroundColors.includes(inputType)) {
+            handleBackgroundColorChange(selectedSquares);
+        }
+
+        setSelectionStart(null);
+    }
+
     const handleUserInput = (value: number) => {
         switch (inputType) {
             case InputType.BigNumber:
                 {
                     const tmp = cells.map((cell) => {
-                        if (cell.index === selectedSquare && !cell.isProvided) return { ...cell, value: value, centerNotes: [], cornerNotes: [] };
+                        if (selectedSquares.includes(cell.index) && !cell.isProvided) return { ...cell, value: value, centerNotes: [], cornerNotes: [] };
                         return cell;
                     });
                     updateUndoStack();
                     setRedoStack([]);
                     setCells(tmp);
-                    const errs = getConflictIndices(tmp, selectedSquare ?? 0);
-                    setErrorIndices(errs);
+                    let errs: number[] = [];
+                    for (let i = 0; i < selectedSquares.length; i++) {
+                        errs = [...errs, ...getConflictIndices(tmp, selectedSquares[i])];
+                    }
+                    setErrorIndices([...new Set(errs)]);
                 }
                 break;
             case InputType.SmallCenterNumber:
                 {
                     const tmp = cells.map((cell) => {
-                        if (cell.index === selectedSquare) return { ...cell, centerNotes: [...cell.centerNotes, value] };
+                        if (selectedSquares.includes(cell.index)) return { ...cell, centerNotes: [...new Set([...cell.centerNotes, value])] };
                         return cell;
                     });
                     updateUndoStack();
@@ -70,7 +103,7 @@ function Puzzle() {
             case InputType.SmallCornerNumber:
                 {
                     const tmp = cells.map((cell) => {
-                        if (cell.index === selectedSquare) return { ...cell, cornerNotes: [...cell.cornerNotes, value] };
+                        if (selectedSquares.includes(cell.index)) return { ...cell, cornerNotes: [...new Set([...cell.cornerNotes, value])] };
                         return cell;
                     });
                     updateUndoStack();
@@ -122,7 +155,7 @@ function Puzzle() {
             case InputType.BigNumber:
                 {
                     const tmp = cells.map((cell) => {
-                        if (cell.index === selectedSquare) return { ...cell, value: null };
+                        if (selectedSquares.includes(cell.index)) return { ...cell, value: null };
                         return cell;
                     });
                     updateUndoStack();
@@ -132,9 +165,9 @@ function Puzzle() {
                 break;
             case InputType.SmallCenterNumber:
                 {
-                    if (selectedSquare !== null && cells[selectedSquare].centerNotes.length === 0) break;
+                    //if (selectedSquare !== null && cells[selectedSquare].centerNotes.length === 0) break;
                     const tmp = cells.map((cell) => {
-                        if (cell.index === selectedSquare) return { ...cell, centerNotes: cell.centerNotes.slice(0, -1) };
+                        if (selectedSquares.includes(cell.index)) return { ...cell, centerNotes: cell.centerNotes.slice(0, -1) };
                         return cell;
                     });
                     updateUndoStack();
@@ -144,9 +177,9 @@ function Puzzle() {
                 break;
             case InputType.SmallCornerNumber:
                 {
-                    if (selectedSquare !== null && cells[selectedSquare].cornerNotes.length === 0) break;
+                    //if (selectedSquare !== null && cells[selectedSquare].cornerNotes.length === 0) break;
                     const tmp = cells.map((cell) => {
-                        if (cell.index === selectedSquare) return { ...cell, cornerNotes: cell.cornerNotes.slice(0, -1) };
+                        if (selectedSquares.includes(cell.index)) return { ...cell, cornerNotes: cell.cornerNotes.slice(0, -1) };
                         return cell;
                     });
                     updateUndoStack();
@@ -181,28 +214,31 @@ function Puzzle() {
     }
 
     const handleArrowKey = (action: UserAction) => {
+        // first, crunch down multiple selected cells to most recent
+        let squareToMove:number = selectedSquares.length > 0 ? selectedSquares[selectedSquares.length - 1] : 0;
         switch (action) {
             case UserAction.ArrowUp:
-                if (selectedSquare < 9) return;
-                setSelectedSquare(selectedSquare - 9);
+                if (squareToMove < 9) return;
+                squareToMove -= 9;
                 break;
             case UserAction.ArrowDown:
-                if (selectedSquare > 71) return;
-                setSelectedSquare(selectedSquare + 9);
+                if (squareToMove > 71) return;
+                squareToMove += 9;
                 break;
             case UserAction.ArrowLeft:
-                if (selectedSquare < 1) return;
-                if (selectedSquare % 9 == 0) return; // left edge
-                setSelectedSquare(selectedSquare - 1);
+                if (squareToMove < 1) return;
+                if (squareToMove % 9 == 0) return; // left edge
+                squareToMove -= 1;
                 break;
             case UserAction.ArrowRight:
-                if (selectedSquare > 79) return;
-                if (selectedSquare % 9 == 8) return; // right edge
-                setSelectedSquare(selectedSquare + 1);
+                if (squareToMove > 79) return;
+                if (squareToMove % 9 == 8) return; // right edge
+                squareToMove += 1;
                 break;
             default:
                 break;
         }
+        setSelectedSquares([squareToMove]);
     }
 
     const handleReset = () => {
@@ -216,7 +252,7 @@ function Puzzle() {
         setRedoStack([]);
     }
 
-    const handleBackgroundColorChange = (square: number) => {
+    const handleBackgroundColorChange = (squares: number[]) => {
         let color = '#ffffff';
         switch (inputType) {
             case InputType.BackgroundColorGreen:
@@ -236,7 +272,7 @@ function Puzzle() {
         }
         console.log('color', color);
         const tmp = cells.map((cell) => {
-            if (cell.index === square) {
+            if (squares.includes(cell.index)) {
                 console.log('setting color at index', cell.index);
                 return { ...cell, color: color };
             }
@@ -262,7 +298,7 @@ function Puzzle() {
 
     return (
         <>
-            <Board cells={cells} errorIndices={errorIndices}  selectedSquare={selectedSquare} onSelectedSquareChanged={handleSelectedSquareChanged} />
+            <Board cells={cells} errorIndices={errorIndices} selectedSquares={selectedSquares} onSelectionStart={handleSelectionStart} onSelectionEnd={handleSelectionEnd} />
             <Controls activeInputType={inputType} isUndoEnabled={undoStack.length > 0} isRedoEnabled={redoStack.length > 0}
                 onInputTypeChanged={handleInputTypeChanged} onUserInput={handleUserInput} onUserAction={handleUserAction} />
         </>

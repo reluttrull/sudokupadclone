@@ -4,25 +4,32 @@ import { type Cell } from '../interfaces'
 interface BoardProps {
     cells: Cell[],
     errorIndices: number[],
-    selectedSquare: number | null,
-    onSelectedSquareChanged: (square: number) => void
+    selectedSquares: number[],
+    onSelectionStart: (square: number) => void,
+    onSelectionEnd: (square: number) => void
 };
 
-function Board({ cells, errorIndices, selectedSquare, onSelectedSquareChanged }: BoardProps) {
+function Board({ cells, errorIndices, selectedSquares, onSelectionStart, onSelectionEnd }: BoardProps) {
 
-    const handleSquareSelected = (square: number) => {
-        onSelectedSquareChanged(square);
+    const handleDragStart = (square: number) => {
+        onSelectionStart(square);
     };
+
+    const handleDragEnd = (square: number) => {
+        onSelectionEnd(square);
+    }
 
     return (
         <>
             <div className="board">
-                {cells.map((cell) => (<Square
-                    key={`square${cell.index}`}
-                    cellData={cell}
-                    hasError={errorIndices.includes(cell.index)}
-                    isSelected={cell.index === selectedSquare}
-                    onSquareSelected={handleSquareSelected} />
+                {cells.map((cell) => (
+                    <div onMouseDown={() => handleDragStart(cell.index)} onMouseUp={() => handleDragEnd(cell.index)}>
+                        <Square
+                        key={`square${cell.index}`}
+                        cellData={cell}
+                        hasError={errorIndices.includes(cell.index)}
+                        isSelected={selectedSquares.includes(cell.index)} />
+                    </div>
                 ))}
             </div>
         </>

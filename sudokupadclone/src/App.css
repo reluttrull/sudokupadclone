@@ -59,6 +59,11 @@
     display: grid;
     place-items: center;
     grid-template-areas: "overlap";
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
 }
 
 .square-layer {

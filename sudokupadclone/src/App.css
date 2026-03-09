@@ -41,6 +41,16 @@
   color: #888;
 }
 
+.return-to-menu-button {
+    text-align: left;
+    display: block;
+    padding: 5px;
+}
+
+.sample-puzzle {
+    padding-bottom: 20px;
+}
+
 .board {
     display: grid;
     grid-template-columns: repeat(9, 1fr);

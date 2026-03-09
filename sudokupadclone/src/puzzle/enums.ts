@@ -44,3 +44,18 @@ export const Color = {
 } as const;
 
 export type Color = typeof Color[keyof typeof Color];
+
+export const Difficulty = {
+    None: 0,
+    Easy: 1,
+    Medium: 5,
+    Hard: 10
+} as const;
+
+export type Difficulty = typeof Difficulty[keyof typeof Difficulty];
+
+export function getDifficultyName(value: Difficulty): keyof typeof Difficulty | undefined {
+    return Object.keys(Difficulty).find(
+        key => Difficulty[key as keyof typeof Difficulty] === value
+    ) as keyof typeof Difficulty | undefined;
+}

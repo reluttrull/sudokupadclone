@@ -23,9 +23,10 @@ function Board({ cells, errorIndices, selectedSquares, onSelectionStart, onSelec
         <>
             <div className="board">
                 {cells.map((cell) => (
-                    <div onMouseDown={() => handleDragStart(cell.index)} onMouseUp={() => handleDragEnd(cell.index)}>
+                    <div key={`square${cell.index}`}
+                        onMouseDown={() => handleDragStart(cell.index)} onMouseUp={() => handleDragEnd(cell.index)}
+                        onTouchStart={() => handleDragStart(cell.index)} onTouchEnd={() => handleDragEnd(cell.index)} >
                         <Square
-                        key={`square${cell.index}`}
                         cellData={cell}
                         hasError={errorIndices.includes(cell.index)}
                         isSelected={selectedSquares.includes(cell.index)} />

@@ -60,19 +60,19 @@ function Controls({ activeInputType, isUndoEnabled, isRedoEnabled, onInputTypeCh
                 <div className="controls-item">
                     <button className={activeInputType == InputType.BigNumber ? 'active-button square-button-icon' : 'inactive-button square-button-icon'}
                                 onClick={() => onInputTypeChanged(InputType.BigNumber)} >
-                        <img src="/bigNumberInput.png" />
+                        <img src="bigNumberInput.png" />
                     </button>
                     <button className={activeInputType == InputType.SmallCenterNumber ? 'active-button square-button-icon' : 'inactive-button square-button-icon'}
                                 onClick={() => onInputTypeChanged(InputType.SmallCenterNumber)}>
-                        <img src="/smallCenterNumbersInput.png" />
+                        <img src="smallCenterNumbersInput.png" />
                     </button>
                     <button className={activeInputType == InputType.SmallCornerNumber ? 'active-button square-button-icon' : 'inactive-button square-button-icon'}
                         onClick={() => onInputTypeChanged(InputType.SmallCornerNumber)}>
-                        <img src="/smallCornerNumbersInput.png" />
+                        <img src="smallCornerNumbersInput.png" />
                     </button>
                     <button className={backgroundColors.includes(activeInputType) ? 'active-button square-button-icon' : 'inactive-button square-button-icon'}
                         onClick={openBackgroundColorModal}>
-                        <img src="/backgroundColors.png" />
+                        <img src="backgroundColors.png" />
                     </button>
                 </div>
             </div>

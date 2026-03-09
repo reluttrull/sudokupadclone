@@ -294,15 +294,11 @@ function Puzzle({ cellValues }: PuzzleProps) {
     }
 
     const updateUndoStack = () => {
-        const tmp = undoStack;
-        tmp.push(structuredClone(cells));
-        setUndoStack(tmp);
+        setUndoStack(prev => [...prev, structuredClone(cells)]);
     }
 
     const updateRedoStack = () => {
-        const tmp = redoStack;
-        tmp.push(structuredClone(cells));
-        setRedoStack(tmp);
+        setRedoStack(prev => [...prev, structuredClone(cells)]);
     }
     
 

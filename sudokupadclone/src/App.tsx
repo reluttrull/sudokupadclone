@@ -10,7 +10,7 @@ function App() {
   return (
       <>
           {selectedPuzzleIndex == null && samplePuzzles.map((_, index) =>
-              <div className='sample-puzzle'>
+              <div className='sample-puzzle' key={`samplePuzzle${index}`} >
                   <div><strong>Name:</strong> {samplePuzzles[index]?.name}</div>
                   <div><strong>Difficulty:</strong> {getDifficultyName(samplePuzzles[index]?.difficulty)}</div>
                   <button onClick={() => setSelectedPuzzleIndex(index)}>Play now!</button>

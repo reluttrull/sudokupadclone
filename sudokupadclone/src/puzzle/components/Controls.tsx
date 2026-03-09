@@ -62,20 +62,20 @@ function Controls({ activeInputType, isUndoEnabled, isRedoEnabled, onInputTypeCh
                         <MdBackspace />
                     </button>
                 </div>
-                <div className="controls-item">
-                    <button className={activeInputType == InputType.BigNumber ? 'active-button square-button-icon' : 'inactive-button square-button-icon'}
+                <div className="input-controls controls-item">
+                    <button className={activeInputType == InputType.BigNumber ? 'active-button square-button-icon input-control' : 'inactive-button square-button-icon input-control'}
                                 onClick={() => onInputTypeChanged(InputType.BigNumber)} >
                         <img src="bigNumberInput.png" />
                     </button>
-                    <button className={activeInputType == InputType.SmallCenterNumber ? 'active-button square-button-icon' : 'inactive-button square-button-icon'}
+                    <button className={activeInputType == InputType.SmallCenterNumber ? 'active-button square-button-icon input-control' : 'inactive-button square-button-icon input-control'}
                                 onClick={() => onInputTypeChanged(InputType.SmallCenterNumber)}>
                         <img src="smallCenterNumbersInput.png" />
                     </button>
-                    <button className={activeInputType == InputType.SmallCornerNumber ? 'active-button square-button-icon' : 'inactive-button square-button-icon'}
+                    <button className={activeInputType == InputType.SmallCornerNumber ? 'active-button square-button-icon input-control' : 'inactive-button square-button-icon input-control'}
                         onClick={() => onInputTypeChanged(InputType.SmallCornerNumber)}>
                         <img src="smallCornerNumbersInput.png" />
                     </button>
-                    <button className={backgroundColors.includes(activeInputType) ? 'active-button square-button-icon' : 'inactive-button square-button-icon'}
+                    <button className={backgroundColors.includes(activeInputType) ? 'active-button square-button-icon input-control' : 'inactive-button square-button-icon input-control'}
                         onClick={openBackgroundColorModal}>
                         <img src="backgroundColors.png" />
                     </button>

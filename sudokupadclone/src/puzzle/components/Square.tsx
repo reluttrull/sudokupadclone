@@ -11,13 +11,28 @@ function Square({ cellData, hasError, isSelected }: SquareProps) {
     const getClasses = () => {
         if (hasError) return 'error-square square';
         if (isSelected) return 'selected-square square';
-        if (cellData.color != null) return `${cellData.color} square`;
         return 'square';
+    }
+
+    const getBackground = () => {
+        if (cellData.colors.length === 0) return undefined;
+
+        const step = 100 / cellData.colors.length;
+
+        const gradientStops = cellData.colors
+            .map((c, i) => {
+                const start = i * step;
+                const end = (i + 1) * step;
+                return `var(--${c}) ${start}% ${end}%`;
+            })
+            .join(',');
+
+        return `linear-gradient(135deg, ${gradientStops})`;
     }
 
     return (
         <>
-            <div className={getClasses()} >
+            <div className={getClasses()} style={{ background: getBackground() }} >
                 <span className="square-center-notes square-layer">
                     {cellData.centerNotes.sort((a, b) => a - b)
                                          .join('')}

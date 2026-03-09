@@ -79,6 +79,11 @@ body, button {
     -ms-user-select: none;
     user-select: none;
     cursor: default;
+    --green: #c7e6aa55;
+    --purple: #aba6e655;
+    --orange: #e6c19755;
+    --blue: #a6d8e655;
+    --white: #ffffff55;
 }
 
 .square-layer {
@@ -205,22 +210,22 @@ body, button {
     border-radius: 8px;
 }
 
-.green-background {
+.green {
     background-color: #c7e6aa55;
 }
 
-.purple-background {
+.purple {
     background-color: #aba6e655;
 }
 
-.orange-background {
+.orange {
     background-color: #e6c19755;
 }
 
-.blue-background {
+.blue {
     background-color: #a6d8e655;
 }
 
-.white-background {
+.white {
     background-color: #ffffff55;
 }

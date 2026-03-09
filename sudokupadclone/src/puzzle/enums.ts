@@ -7,7 +7,7 @@ export const InputType = {
     BackgroundColorPurple: 5,
     BackgroundColorOrange: 6,
     BackgroundColorBlue: 7,
-    BackgroundColorWhite: 8
+    BackgroundColorClear: 8
 } as const;
 
 export type InputType = typeof InputType[keyof typeof InputType];
@@ -32,15 +32,15 @@ export const backgroundColors: InputType[] = [
     InputType.BackgroundColorPurple,
     InputType.BackgroundColorOrange,
     InputType.BackgroundColorBlue,
-    InputType.BackgroundColorWhite
+    InputType.BackgroundColorClear
 ];
 
 export const Color = {
-    Green: 'green-background',
-    Purple: 'purple-background',
-    Orange: 'orange-background',
-    Blue: 'blue-background',
-    White: 'white-background'
+    Green: 'green',
+    Purple: 'purple',
+    Orange: 'orange',
+    Blue: 'blue',
+    Clear: 'white'
 } as const;
 
 export type Color = typeof Color[keyof typeof Color];

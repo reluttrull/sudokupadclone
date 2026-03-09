@@ -4,7 +4,7 @@ export interface Cell {
     value: number | null;
     centerNotes: number[];
     cornerNotes: number[];
-    color: string | null;
+    colors: string[];
     isProvided: boolean;
     index: number;
 }

@@ -27,6 +27,11 @@ function Controls({ activeInputType, isUndoEnabled, isRedoEnabled, onInputTypeCh
         setIsColorModalOpen(false);
     }
 
+    const handleBackgroundColorSelected = (inputType: InputType) => {
+        onInputTypeChanged(inputType);
+        closeBackgroundColorModal();
+    }
+
     return (
         <>
             <div className="controls-container">
@@ -81,11 +86,11 @@ function Controls({ activeInputType, isUndoEnabled, isRedoEnabled, onInputTypeCh
                     <div className="modal" onClick={(e) => e.stopPropagation()}>
                         <h3>Select Background Color</h3>
 
-                        <button onClick={() => onInputTypeChanged(InputType.BackgroundColorGreen)} className={Color.Green}>Green</button>
-                        <button onClick={() => onInputTypeChanged(InputType.BackgroundColorPurple)} className={Color.Purple}>Purple</button>
-                        <button onClick={() => onInputTypeChanged(InputType.BackgroundColorOrange)} className={Color.Orange}>Orange</button>
-                        <button onClick={() => onInputTypeChanged(InputType.BackgroundColorBlue)} className={Color.Blue}>Blue</button>
-                        <button onClick={() => onInputTypeChanged(InputType.BackgroundColorWhite)} className={Color.White}>White</button>
+                        <button onClick={() => handleBackgroundColorSelected(InputType.BackgroundColorGreen)} className={Color.Green}>Green</button>
+                        <button onClick={() => handleBackgroundColorSelected(InputType.BackgroundColorPurple)} className={Color.Purple}>Purple</button>
+                        <button onClick={() => handleBackgroundColorSelected(InputType.BackgroundColorOrange)} className={Color.Orange}>Orange</button>
+                        <button onClick={() => handleBackgroundColorSelected(InputType.BackgroundColorBlue)} className={Color.Blue}>Blue</button>
+                        <button onClick={() => handleBackgroundColorSelected(InputType.BackgroundColorClear)} className={Color.Clear}>Clear</button>
 
                         <button onClick={closeBackgroundColorModal}>Close</button>
                     </div>

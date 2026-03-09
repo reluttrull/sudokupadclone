@@ -22,7 +22,7 @@ function Puzzle({ cellValues }: PuzzleProps) {
         indices.sort(() => Math.random() - 0.5);
         const tmp = new Array(81);
         for (let i: number = 0; i < cellValues.length; i++) {
-            tmp[i] = { value: cellValues[i], centerNotes: [], cornerNotes: [], isProvided: cellValues[i] !== null, index: i };
+            tmp[i] = { value: cellValues[i], centerNotes: [], cornerNotes: [], colors: [], isProvided: cellValues[i] !== null, index: i };
         }
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setCells(tmp);
@@ -41,7 +41,7 @@ function Puzzle({ cellValues }: PuzzleProps) {
         if (selectionStart === idx) {
             setSelectedSquares([idx]);
             if (backgroundColors.includes(inputType)) {
-                handleBackgroundColorChange(selectedSquares);
+                handleBackgroundColorChange([idx]);
             }
             setSelectionStart(null);
             return;
@@ -50,16 +50,19 @@ function Puzzle({ cellValues }: PuzzleProps) {
         const max = Math.max(idx, selectionStart);
         const startRow = Math.floor(min / 9);
         const endRow = Math.floor(max / 9);
+        let tmp: number[] = [];
         if (startRow === endRow) {
             const length = Math.floor(max - min) + 1;
-            setSelectedSquares(Array.from({ length }, (_, index) => min + index));
+            tmp = Array.from({ length }, (_, index) => min + index);
+            setSelectedSquares(tmp);
         } else {
             const length = Math.floor((max - min) / 9) + 1;
-            setSelectedSquares(Array.from({ length }, (_, index) => min + index * 9));
+            tmp = Array.from({ length }, (_, index) => min + index * 9);
+            setSelectedSquares(tmp);
         }
 
         if (backgroundColors.includes(inputType)) {
-            handleBackgroundColorChange(selectedSquares);
+            handleBackgroundColorChange(tmp);
         }
 
         setSelectionStart(null);
@@ -260,6 +263,20 @@ function Puzzle({ cellValues }: PuzzleProps) {
             case InputType.BackgroundColorBlue:
                 color = Color.Blue;
                 break;
+            case InputType.BackgroundColorClear:
+                {
+                    const tmp = cells.map((cell) => {
+                        if (squares.includes(cell.index)) {
+                            console.log('clearing color at index', cell.index);
+                            return { ...cell, colors: [] };
+                        }
+                        return cell;
+                    });
+                    updateUndoStack();
+                    setRedoStack([]);
+                    setCells(tmp);
+                }
+                return;
             default:
                 break;
         }
@@ -267,7 +284,7 @@ function Puzzle({ cellValues }: PuzzleProps) {
         const tmp = cells.map((cell) => {
             if (squares.includes(cell.index)) {
                 console.log('setting color at index', cell.index);
-                return { ...cell, color: color };
+                return { ...cell, colors: cell.colors.includes(color) ? cell.colors.filter((c, _) => c != color) : [...cell.colors, color] };
             }
             return cell;
         });

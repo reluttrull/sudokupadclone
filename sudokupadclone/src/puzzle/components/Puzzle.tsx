@@ -33,36 +33,21 @@ function Puzzle({ cellValues }: PuzzleProps) {
 
     const handleSelectionStart = (index: number) => {
         setSelectionStart(index);
+        setSelectedSquares([index]);
     }
 
-    const handleSelectionEnd = (idx: number) => {
-        console.log('start and end selection', selectionStart, idx);
+    const handleSelectionUpdate = (index: number) => {
         if (selectionStart === null) return;
-        if (selectionStart === idx) {
-            setSelectedSquares([idx]);
-            if (backgroundColors.includes(inputType)) {
-                handleBackgroundColorChange([idx]);
-            }
-            setSelectionStart(null);
-            return;
-        }
-        const min = Math.min(idx, selectionStart);
-        const max = Math.max(idx, selectionStart);
-        const startRow = Math.floor(min / 9);
-        const endRow = Math.floor(max / 9);
-        let tmp: number[] = [];
-        if (startRow === endRow) {
-            const length = Math.floor(max - min) + 1;
-            tmp = Array.from({ length }, (_, index) => min + index);
-            setSelectedSquares(tmp);
-        } else {
-            const length = Math.floor((max - min) / 9) + 1;
-            tmp = Array.from({ length }, (_, index) => min + index * 9);
-            setSelectedSquares(tmp);
-        }
+        if (selectedSquares.includes(index)) return;
+        setSelectedSquares([...selectedSquares, index]);
+    }
+
+    const handleSelectionEnd = () => {
+        console.log('selected squares include', selectedSquares);
+        if (selectionStart === null) return;
 
         if (backgroundColors.includes(inputType)) {
-            handleBackgroundColorChange(tmp);
+            handleBackgroundColorChange(selectedSquares);
         }
 
         setSelectionStart(null);
@@ -304,7 +289,8 @@ function Puzzle({ cellValues }: PuzzleProps) {
 
     return (
         <>
-            <Board cells={cells} errorIndices={errorIndices} selectedSquares={selectedSquares} onSelectionStart={handleSelectionStart} onSelectionEnd={handleSelectionEnd} />
+            <Board cells={cells} errorIndices={errorIndices} selectedSquares={selectedSquares}
+                onSelectionStart={handleSelectionStart} onSelectionUpdate={handleSelectionUpdate} onSelectionEnd={handleSelectionEnd} />
             <Controls activeInputType={inputType} isUndoEnabled={undoStack.length > 0} isRedoEnabled={redoStack.length > 0}
                 onInputTypeChanged={handleInputTypeChanged} onUserInput={handleUserInput} onUserAction={handleUserAction} />
         </>

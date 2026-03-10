@@ -32,7 +32,7 @@ function Square({ cellData, hasError, isSelected }: SquareProps) {
 
     return (
         <>
-            <div className={getClasses()} style={{ background: getBackground() }} >
+            <div className={getClasses()} style={{ background: getBackground() }} data-index={cellData.index} >
                 <span className="square-center-notes square-layer">
                     {cellData.centerNotes.sort((a, b) => a - b)
                                          .join('')}

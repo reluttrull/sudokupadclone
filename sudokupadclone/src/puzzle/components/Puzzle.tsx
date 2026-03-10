@@ -43,7 +43,6 @@ function Puzzle({ cellValues }: PuzzleProps) {
     }
 
     const handleSelectionEnd = () => {
-        console.log('selected squares include', selectedSquares);
         if (selectionStart === null) return;
 
         if (backgroundColors.includes(inputType)) {
@@ -165,7 +164,7 @@ function Puzzle({ cellValues }: PuzzleProps) {
                     });
                     updateUndoStack();
                     setRedoStack([]);
-                    setCells(tmp);
+                    setCells(tmp); // todo: consolidate
                 }
                 break;
             default:
@@ -251,10 +250,7 @@ function Puzzle({ cellValues }: PuzzleProps) {
             case InputType.BackgroundColorClear:
                 {
                     const tmp = cells.map((cell) => {
-                        if (squares.includes(cell.index)) {
-                            console.log('clearing color at index', cell.index);
-                            return { ...cell, colors: [] };
-                        }
+                        if (squares.includes(cell.index)) return { ...cell, colors: [] };
                         return cell;
                     });
                     updateUndoStack();
@@ -265,12 +261,8 @@ function Puzzle({ cellValues }: PuzzleProps) {
             default:
                 break;
         }
-        console.log('color', color);
         const tmp = cells.map((cell) => {
-            if (squares.includes(cell.index)) {
-                console.log('setting color at index', cell.index);
-                return { ...cell, colors: cell.colors.includes(color) ? cell.colors.filter((c, _) => c != color) : [...cell.colors, color] };
-            }
+            if (squares.includes(cell.index)) return { ...cell, colors: cell.colors.includes(color) ? cell.colors.filter((c, _) => c != color) : [...cell.colors, color] };
             return cell;
         });
         updateUndoStack();
@@ -286,7 +278,6 @@ function Puzzle({ cellValues }: PuzzleProps) {
         setRedoStack(prev => [...prev, structuredClone(cells)]);
     }
     
-
     return (
         <>
             <Board cells={cells} errorIndices={errorIndices} selectedSquares={selectedSquares}

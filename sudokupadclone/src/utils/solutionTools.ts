@@ -43,14 +43,16 @@ export function getConflictIndices(cells: Cell[], changedIndex: number): number[
         }
     }
     if (conflictIndices.length > 0) conflictIndices.push(changedIndex);
-    console.log('returning', [...new Set(conflictIndices)]);
     return [...new Set(conflictIndices)];
 }
 
 export function getSolutionErrorIndices(solution: Cell[]): number[] {
     // check unfilled
     const nullCells = solution.filter(elem => elem.value === null);
-    if (nullCells.length > 0) return [...new Set(nullCells.map((elem) => { return elem.index; }))]
+    if (nullCells.length > 0) {
+        console.log('not all cells filled in');
+        return [...new Set(nullCells.map((elem) => { return elem.index; }))];
+    }
     // check no dupes
     for (let i = 1; i <= 9; i++) {
         const sameValues = solution.filter(n => n.value == i);
@@ -64,7 +66,6 @@ export function getSolutionErrorIndices(solution: Cell[]): number[] {
     for (let i = 0; i <= 73; i += 9) {
         const row = solution.slice(i, i + 9);
         const rowValues = row.map((elem) => { return elem.value ?? 0; });
-        console.log('checking row starting at', i, row);
         if (rowValues.reduce((acc, curr) => acc + curr, 0) !== 45) {
             console.log('problem in row starting at', i, row);
             return [...new Set(row.map((elem) => { return elem.index; }))];
@@ -74,7 +75,6 @@ export function getSolutionErrorIndices(solution: Cell[]): number[] {
     for (let i = 0; i <= 8; i++) {
         const col = solution.filter((_, idx) => idx % 9 === i);
         const colValues = col.map((elem) => { return elem.value ?? 0; });
-        console.log('checking col starting at', i, col);
         if (colValues.reduce((acc, curr) => acc + curr, 0) !== 45) {
             console.log('problem in col starting at', i, col);
             return [...new Set(col.map((elem) => { return elem.index; }))];
@@ -84,7 +84,6 @@ export function getSolutionErrorIndices(solution: Cell[]): number[] {
     for (let boxnum = 0; boxnum < 9; boxnum++) {
         const box = solution.filter((_, idx) => boxIndices[boxnum].includes(idx));
         const boxValues = box.map((elem) => { return elem.value ?? 0; });
-        console.log('checking box starting at', boxIndices[boxnum][0], box);
         if (boxValues.reduce((acc, curr) => acc + curr, 0) !== 45) {
             console.log('problem in box starting at', boxIndices[boxnum][0], box);
             return [...new Set(box.map((elem) => { return elem.index; }))];

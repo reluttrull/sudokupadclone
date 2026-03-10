@@ -33,7 +33,6 @@ function Board({ cells, errorIndices, selectedSquares, onSelectionStart, onSelec
         if (!isDragging) return;
         const index = getChildIndexFromPoint(e.clientX, e.clientY);
         if (index !== null) {
-            console.log('moving through square', index);
             onSelectionUpdate(index);
         }
     }

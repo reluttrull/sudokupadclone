@@ -102,6 +102,7 @@ function Puzzle({ cellValues, isPaused }: PuzzleProps) {
     }
 
     const handleUserAction = (userAction: UserAction) => {
+        console.log('got action', userAction);
         switch (userAction) {
             case UserAction.Backspace:
                 handleBackspace();
@@ -128,6 +129,36 @@ function Puzzle({ cellValues, isPaused }: PuzzleProps) {
             case UserAction.Reset:
                 handleReset();
                 setErrorIndices([]);
+                break;
+            case UserAction.ShiftHold:
+                handleSelectionStart(selectedSquares[0] ?? 0);
+                break;
+            case UserAction.ShiftRelease:
+                handleSelectionEnd();
+                break;
+            case UserAction.ShiftUp:
+                if (selectedSquares.length < 1) break;
+                var fromSquare = selectedSquares[selectedSquares.length - 1];
+                var toSquare = getMovedSquare(fromSquare, -9);
+                if (toSquare !== null) handleSelectionUpdate(toSquare);
+                break;
+            case UserAction.ShiftDown:
+                if (selectedSquares.length < 1) break;
+                var fromSquare = selectedSquares[selectedSquares.length - 1];
+                var toSquare = getMovedSquare(fromSquare, 9);
+                if (toSquare !== null) handleSelectionUpdate(toSquare);
+                break;
+            case UserAction.ShiftLeft:
+                if (selectedSquares.length < 1) break;
+                var fromSquare = selectedSquares[selectedSquares.length - 1];
+                var toSquare = getMovedSquare(fromSquare, -1);
+                if (toSquare !== null) handleSelectionUpdate(toSquare);
+                break;
+            case UserAction.ShiftRight:
+                if (selectedSquares.length < 1) break;
+                var fromSquare = selectedSquares[selectedSquares.length - 1];
+                var toSquare = getMovedSquare(fromSquare, 1);
+                if (toSquare !== null) handleSelectionUpdate(toSquare);
                 break;
             default:
                 break;
@@ -197,30 +228,34 @@ function Puzzle({ cellValues, isPaused }: PuzzleProps) {
 
     const handleArrowKey = (action: UserAction) => {
         // first, crunch down multiple selected cells to most recent
-        let squareToMove:number = selectedSquares.length > 0 ? selectedSquares[selectedSquares.length - 1] : 0;
+        const squareToMove: number = selectedSquares.length > 0 ? selectedSquares[selectedSquares.length - 1] : 0;
+        let movedSquare: number | null = null;
         switch (action) {
             case UserAction.ArrowUp:
-                if (squareToMove < 9) return;
-                squareToMove -= 9;
+                movedSquare = getMovedSquare(squareToMove, -9);
                 break;
             case UserAction.ArrowDown:
-                if (squareToMove > 71) return;
-                squareToMove += 9;
+                movedSquare = getMovedSquare(squareToMove, 9);
                 break;
             case UserAction.ArrowLeft:
-                if (squareToMove < 1) return;
-                if (squareToMove % 9 == 0) return; // left edge
-                squareToMove -= 1;
+                movedSquare = getMovedSquare(squareToMove, -1);
                 break;
             case UserAction.ArrowRight:
-                if (squareToMove > 79) return;
-                if (squareToMove % 9 == 8) return; // right edge
-                squareToMove += 1;
+                movedSquare = getMovedSquare(squareToMove, 1);
                 break;
             default:
                 break;
         }
-        setSelectedSquares([squareToMove]);
+        if (movedSquare === null) return;
+        setSelectedSquares([movedSquare]);
+    }
+
+    const getMovedSquare = (fromSquare: number, moveDiff: number): (number | null) => {
+        let toSquare = fromSquare + moveDiff;
+        if (toSquare < 0 || toSquare > 80) return null;
+        if (fromSquare % 9 === 0 && moveDiff === -1) return null; // left edge
+        if (fromSquare % 9 === 8 && moveDiff === 1) return null; // right edge
+        return toSquare;
     }
 
     const handleReset = () => {

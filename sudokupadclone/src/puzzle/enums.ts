@@ -21,7 +21,13 @@ export const UserAction = {
     ArrowDown: 5,
     ArrowLeft: 6,
     ArrowRight: 7,
-    Reset: 8
+    Reset: 8,
+    ShiftHold: 9,
+    ShiftRelease: 10,
+    ShiftUp: 11,
+    ShiftDown: 12,
+    ShiftLeft: 13,
+    ShiftRight: 14
 } as const;
 
 export type UserAction = typeof UserAction[keyof typeof UserAction];

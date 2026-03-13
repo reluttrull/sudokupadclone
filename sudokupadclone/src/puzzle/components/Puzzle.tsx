@@ -6,9 +6,10 @@ import { type Cell } from '../interfaces'
 import { getSolutionErrorIndices, getConflictIndices } from '../../utils/solutionTools'
 
 interface PuzzleProps {
-    cellValues: (number|null)[]
+    cellValues: (number | null)[],
+    isPaused: boolean
 };
-function Puzzle({ cellValues }: PuzzleProps) {
+function Puzzle({ cellValues, isPaused }: PuzzleProps) {
     const [inputType, setInputType] = useState<InputType>(InputType.BigNumber);
     const [selectionStart, setSelectionStart] = useState<number | null>(null);
     const [selectedSquares, setSelectedSquares] = useState<number[]>([]);
@@ -27,6 +28,7 @@ function Puzzle({ cellValues }: PuzzleProps) {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setCells(tmp);
     }, []);
+
     const handleInputTypeChanged = (inputType: InputType) => {
         setInputType(inputType);
     }
@@ -280,8 +282,9 @@ function Puzzle({ cellValues }: PuzzleProps) {
     
     return (
         <>
-            <Board cells={cells} errorIndices={errorIndices} selectedSquares={selectedSquares}
-                onSelectionStart={handleSelectionStart} onSelectionUpdate={handleSelectionUpdate} onSelectionEnd={handleSelectionEnd} />
+            {!isPaused && <Board cells={cells} errorIndices={errorIndices} selectedSquares={selectedSquares}
+                onSelectionStart={handleSelectionStart} onSelectionUpdate={handleSelectionUpdate} onSelectionEnd={handleSelectionEnd} />}
+            {isPaused && <h1>Paused</h1> }
             <Controls activeInputType={inputType} isUndoEnabled={undoStack.length > 0} isRedoEnabled={redoStack.length > 0}
                 onInputTypeChanged={handleInputTypeChanged} onUserInput={handleUserInput} onUserAction={handleUserAction} />
         </>

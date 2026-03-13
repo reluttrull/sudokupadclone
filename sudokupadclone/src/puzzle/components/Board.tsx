@@ -45,15 +45,15 @@ function Board({ cells, errorIndices, selectedSquares, onSelectionStart, onSelec
     return (
         <>
             <div className="board"
-                 onPointerUp={handleDragEnd}
-                 onPointerMove={handleDragMove} >
+                onPointerUp={handleDragEnd}
+                onPointerMove={handleDragMove} >
                 {cells.map((cell) => (
                     <div key={`square${cell.index}`}
                         onPointerDown={() => handleDragStart(cell.index)}>
                         <Square
-                        cellData={cell}
-                        hasError={errorIndices.includes(cell.index)}
-                        isSelected={selectedSquares.includes(cell.index)} />
+                            cellData={cell}
+                            hasError={errorIndices.includes(cell.index)}
+                            isSelected={selectedSquares.includes(cell.index)} />
                     </div>
                 ))}
             </div>

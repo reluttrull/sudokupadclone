@@ -45,6 +45,11 @@ body, button {
   color: #888;
 }
 
+.columns-container {
+    display: flex;
+    justify-content: space-between;
+}
+
 .return-to-menu-button {
     text-align: left;
     display: block;

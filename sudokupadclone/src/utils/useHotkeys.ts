@@ -15,7 +15,7 @@ export function useNumberHotkeys(onUserInput: (n: number) => void) {
 }
 
 export function useControlHotkeys(onUserAction: (userAction: UserAction) => void) {
-    const handler = useCallback((e: KeyboardEvent) => {
+    const downHandler = useCallback((e: KeyboardEvent) => {
         if (e.ctrlKey && e.key === 'z') {
             onUserAction(UserAction.Undo);
             return;
@@ -23,6 +23,24 @@ export function useControlHotkeys(onUserAction: (userAction: UserAction) => void
         if (e.ctrlKey && e.key === 'y') {
             onUserAction(UserAction.Redo);
             return;
+        }
+        if (e.shiftKey) {
+            switch (e.key) {
+                case 'ArrowUp':
+                    onUserAction(UserAction.ShiftUp);
+                    return;
+                case 'ArrowDown':
+                    onUserAction(UserAction.ShiftDown);
+                    return;
+                case 'ArrowLeft':
+                    onUserAction(UserAction.ShiftLeft);
+                    return;
+                case 'ArrowRight':
+                    onUserAction(UserAction.ShiftRight);
+                    return;
+                default:
+                    break;
+            }
         }
         switch (e.key) {
             case 'Backspace':
@@ -40,13 +58,33 @@ export function useControlHotkeys(onUserAction: (userAction: UserAction) => void
             case 'ArrowRight':
                 onUserAction(UserAction.ArrowRight);
                 break;
+            case 'Shift':
+                console.log('shift down');
+                onUserAction(UserAction.ShiftHold);
+                break;
+            default:
+                break;
+        }
+    }, [onUserAction]);
+
+    const upHandler = useCallback((e: KeyboardEvent) => {
+        switch (e.key) {
+            case 'Shift':
+                console.log('shift up');
+                onUserAction(UserAction.ShiftRelease);
+                break;
             default:
                 break;
         }
     }, [onUserAction]);
 
     useEffect(() => {
-        window.addEventListener('keydown', handler);
-        return () => window.removeEventListener('keydown', handler);
-    }, [handler]);
+        window.addEventListener('keydown', downHandler);
+        return () => window.removeEventListener('keydown', downHandler);
+    }, [downHandler]);
+
+    useEffect(() => {
+        window.addEventListener('keyup', upHandler);
+        return () => window.removeEventListener('keyup', upHandler);
+    }, [upHandler]);
 }

@@ -261,8 +261,8 @@ function Puzzle({ cellValues, isPaused }: PuzzleProps) {
     const handleReset = () => {
         const tmp = cells.map((cell) => {
             return cell.isProvided
-                ? { ...cell, centerNotes: [], cornerNotes: [] }
-                : { ...cell, value: null, centerNotes: [], cornerNotes: [] };
+                ? { ...cell, centerNotes: [], cornerNotes: [], colors: [] }
+                : { ...cell, value: null, centerNotes: [], cornerNotes: [], colors: [] };
         });
         setCells(tmp);
         setUndoStack([]);

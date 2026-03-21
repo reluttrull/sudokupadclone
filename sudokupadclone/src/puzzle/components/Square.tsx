@@ -32,14 +32,14 @@ function Square({ cellData, hasError, isSelected }: SquareProps) {
 
     return (
         <>
-            <div className={getClasses()} style={{ background: getBackground() }} data-index={cellData.index} >
+            <div className={getClasses()} style={{ background: getClasses() == 'square' ? getBackground() : '' }} data-index={cellData.index} >
                 <span className="square-center-notes square-layer">
                     {cellData.centerNotes.sort((a, b) => a - b)
                                          .join('')}
                 </span>
                 <span className="square-corner-notes square-layer">
                     {cellData.cornerNotes.sort((a, b) => a - b)
-                                         .slice(0, 4)
+                                         .slice(0, 8)
                                          .map((val) => (
                         <div className="corner-note">{val}</div>
                     ))}

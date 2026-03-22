@@ -163,7 +163,8 @@ function Puzzle({ cellValues, isPaused }: PuzzleProps) {
                 if (toSquare !== null) handleSelectionUpdate(toSquare);
                 break;
             case UserAction.ChangeInputType:
-                setInputType((inputType + 1) % Object.keys(InputType).length);
+                const next: InputType = (inputType + 1) % Object.keys(InputType).length as InputType;
+                setInputType(next);
                 break;
             default:
                 break;

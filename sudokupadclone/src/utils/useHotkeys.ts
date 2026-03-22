@@ -59,7 +59,6 @@ export function useControlHotkeys(onUserAction: (userAction: UserAction) => void
                 onUserAction(UserAction.ArrowRight);
                 break;
             case 'Shift':
-                console.log('shift down');
                 onUserAction(UserAction.ShiftHold);
                 break;
             default:
@@ -70,7 +69,6 @@ export function useControlHotkeys(onUserAction: (userAction: UserAction) => void
     const upHandler = useCallback((e: KeyboardEvent) => {
         switch (e.key) {
             case 'Shift':
-                console.log('shift up');
                 onUserAction(UserAction.ShiftRelease);
                 break;
             default:

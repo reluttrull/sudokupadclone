@@ -29,8 +29,11 @@ function Puzzle({ cellValues, isPaused }: PuzzleProps) {
         setCells(tmp);
     }, []);
 
-    const handleInputTypeChanged = (inputType: InputType) => {
-        setInputType(inputType);
+    const handleInputTypeChanged = (newInputType: InputType) => {
+        setInputType(newInputType);
+        if (backgroundColors.includes(newInputType)) {
+            handleBackgroundColorChange(selectedSquares, newInputType);
+        }
     }
 
     const handleSelectionStart = (index: number) => {
@@ -102,7 +105,6 @@ function Puzzle({ cellValues, isPaused }: PuzzleProps) {
     }
 
     const handleUserAction = (userAction: UserAction) => {
-        console.log('got action', userAction);
         switch (userAction) {
             case UserAction.Backspace:
                 handleBackspace();
@@ -269,9 +271,9 @@ function Puzzle({ cellValues, isPaused }: PuzzleProps) {
         setRedoStack([]);
     }
 
-    const handleBackgroundColorChange = (squares: number[]) => {
+    const handleBackgroundColorChange = (squares: number[], it: InputType = inputType) => {
         let color = '#ffffff';
-        switch (inputType) {
+        switch (it) {
             case InputType.BackgroundColorGreen:
                 color = Color.Green;
                 break;

@@ -36,10 +36,10 @@ function Controls({ activeInputType, isUndoEnabled, isRedoEnabled, onInputTypeCh
         <>
             <div className="controls-container">
                 <div className="general-controls">
-                    <button className="square-button-icon" disabled={!isUndoEnabled} onClick={() => onUserAction(UserAction.Undo)}>
+                    <button className="square-button-icon" disabled={!isUndoEnabled} onClick={() => onUserAction(UserAction.Undo)} aria-label='Undo: ctrl-z' title='Undo: ctrl-z'>
                         <MdUndo />
                     </button>
-                    <button className="square-button-icon" disabled={!isRedoEnabled} onClick={() => onUserAction(UserAction.Redo)}>
+                    <button className="square-button-icon" disabled={!isRedoEnabled} onClick={() => onUserAction(UserAction.Redo)} aria-label='Redo: ctrl-y' title='Redo: ctrl-y'>
                         <MdRedo />
                     </button>
                     <button className="square-button-icon" onClick={() => onUserAction(UserAction.Validate)}>
@@ -58,25 +58,25 @@ function Controls({ activeInputType, isUndoEnabled, isRedoEnabled, onInputTypeCh
                             </button>
                         );
                     })}
-                    <button className="number-key square-button-icon" onClick={() => onUserAction(UserAction.Backspace)}>
+                    <button className="number-key square-button-icon" onClick={() => onUserAction(UserAction.Backspace)} aria-label='Backspace: backspace' title='Backspace: backspace'>
                         <MdBackspace />
                     </button>
                 </div>
                 <div className="input-controls controls-item">
                     <button className={activeInputType == InputType.BigNumber ? 'active-button square-button-icon input-control' : 'inactive-button square-button-icon input-control'}
-                                onClick={() => onInputTypeChanged(InputType.BigNumber)} >
+                        onClick={() => onInputTypeChanged(InputType.BigNumber)} aria-label='Big number input: toggle inputs with spacebar' title='Big number input: toggle inputs with spacebar'>
                         <img src="bigNumberInput.png" />
                     </button>
                     <button className={activeInputType == InputType.SmallCenterNumber ? 'active-button square-button-icon input-control' : 'inactive-button square-button-icon input-control'}
-                                onClick={() => onInputTypeChanged(InputType.SmallCenterNumber)}>
+                        onClick={() => onInputTypeChanged(InputType.SmallCenterNumber)} aria-label='Center number input: toggle inputs with spacebar' title='Center number input: toggle inputs with spacebar'>
                         <img src="smallCenterNumbersInput.png" />
                     </button>
                     <button className={activeInputType == InputType.SmallCornerNumber ? 'active-button square-button-icon input-control' : 'inactive-button square-button-icon input-control'}
-                        onClick={() => onInputTypeChanged(InputType.SmallCornerNumber)}>
+                        onClick={() => onInputTypeChanged(InputType.SmallCornerNumber)} aria-label='Corner number input: toggle inputs with spacebar' title='Corner number input: toggle inputs with spacebar'>
                         <img src="smallCornerNumbersInput.png" />
                     </button>
                     <button className={backgroundColors.includes(activeInputType) ? 'active-button square-button-icon input-control' : 'inactive-button square-button-icon input-control'}
-                        onClick={openBackgroundColorModal}>
+                        onClick={openBackgroundColorModal} aria-label='Background color input: toggle inputs with spacebar' title='Background color input: toggle inputs with spacebar'>
                         {!backgroundColors.includes(activeInputType) && <img src="backgroundColors.png" />}
                         {activeInputType === InputType.BackgroundColorBlue && <img src="backgroundColorBlue.png" />}
                         {activeInputType === InputType.BackgroundColorGreen && <img src="backgroundColorGreen.png" />}

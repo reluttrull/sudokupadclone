@@ -27,7 +27,8 @@ export const UserAction = {
     ShiftUp: 11,
     ShiftDown: 12,
     ShiftLeft: 13,
-    ShiftRight: 14
+    ShiftRight: 14,
+    ChangeInputType: 15
 } as const;
 
 export type UserAction = typeof UserAction[keyof typeof UserAction];

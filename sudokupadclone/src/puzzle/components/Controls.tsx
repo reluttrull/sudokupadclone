@@ -77,7 +77,12 @@ function Controls({ activeInputType, isUndoEnabled, isRedoEnabled, onInputTypeCh
                     </button>
                     <button className={backgroundColors.includes(activeInputType) ? 'active-button square-button-icon input-control' : 'inactive-button square-button-icon input-control'}
                         onClick={openBackgroundColorModal}>
-                        <img src="backgroundColors.png" />
+                        {!backgroundColors.includes(activeInputType) && <img src="backgroundColors.png" />}
+                        {activeInputType === InputType.BackgroundColorBlue && <img src="backgroundColorBlue.png" />}
+                        {activeInputType === InputType.BackgroundColorGreen && <img src="backgroundColorGreen.png" />}
+                        {activeInputType === InputType.BackgroundColorOrange && <img src="backgroundColorOrange.png" />}
+                        {activeInputType === InputType.BackgroundColorPurple && <img src="backgroundColorPurple.png" />}
+                        {activeInputType === InputType.BackgroundColorClear && <img src="backgroundColorClear.png" />}
                     </button>
                 </div>
             </div>

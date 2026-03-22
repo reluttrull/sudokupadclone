@@ -162,6 +162,9 @@ function Puzzle({ cellValues, isPaused }: PuzzleProps) {
                 var toSquare = getMovedSquare(fromSquare, 1);
                 if (toSquare !== null) handleSelectionUpdate(toSquare);
                 break;
+            case UserAction.ChangeInputType:
+                setInputType((inputType + 1) % Object.keys(InputType).length);
+                break;
             default:
                 break;
         }

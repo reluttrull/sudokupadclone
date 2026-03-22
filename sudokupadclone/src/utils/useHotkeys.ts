@@ -61,6 +61,9 @@ export function useControlHotkeys(onUserAction: (userAction: UserAction) => void
             case 'Shift':
                 onUserAction(UserAction.ShiftHold);
                 break;
+            case ' ':
+                onUserAction(UserAction.ChangeInputType);
+                break;
             default:
                 break;
         }
